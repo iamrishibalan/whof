@@ -1,0 +1,47 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Categories')}}</ion-title>
+    <ion-button (click)="addNewCat()" fill="clear" color="light" slot="end">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="mainContent">
+    <h2 class="ion-text-center" *ngIf="!dummy?.length && !categories?.length">{{util.translate('No Category Found')}}
+    </h2>
+    <ion-item *ngFor="let item of dummy">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none" *ngFor="let item of categories;">
+      <ion-label>{{item.name}}</ion-label>
+      <ion-icon slot="end" name="create-outline" color="primary" (click)="edit(item)"
+        style="margin: 0px 5px;font-size: 25px;">
+      </ion-icon>
+      <ion-icon slot="end" name="trash" color="primary" (click)="deleteItem(item)"
+        style="margin: 0px 5px;font-size: 25px;"></ion-icon>
+      <ion-icon slot="end" [name]="item.status ==='1' ? 'eye-outline':'eye-off-outline'" color="primary"
+        (click)="hideStatus(item)" style="margin: 0px 5px;font-size: 25px;"></ion-icon>
+    </ion-item>
+  </div>
+</ion-content>

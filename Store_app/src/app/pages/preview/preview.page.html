@@ -1,0 +1,40 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-start">{{productName}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeIt()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div *ngFor="let item of lists" style="border-bottom: 1px solid lightgray;">
+    <ion-list *ngIf="item.type == 'radio'" lines="none">
+      <ion-radio-group>
+        <ion-list-header>
+          <ion-label style="font-weight: bold;">{{item.title}}</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let sub of item.items;let i = index;" lines="none">
+          <ion-label style="text-align: left">{{sub.title}}</ion-label>
+          <ion-label style="text-align: right">{{sub.price}}</ion-label>
+          <ion-radio slot="start" mode="md"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-list *ngIf="item.type =='check'" lines="none">
+      <ion-list-header>
+        <ion-label style="font-weight: bold;">{{item.title}}</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let sub of item.items;let j = index;" lines="none">
+        <ion-label style="text-align: left">{{sub.title}}</ion-label>
+        <ion-label style="text-align: right">{{sub.price}}</ion-label>
+        <ion-checkbox slot="start" mode="md"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button expand="block" (click)="closeIt()">{{util.translate('ADD TO CART')}}</ion-button>
+</ion-footer>

@@ -1,0 +1,154 @@
+
+<div mdbModal #tracker="mdbModal" class="modal fade right" tabindex="-1" role="dialog"
+  aria-labelledby="myBasicModalLabel" data-mdb-keyboard="false" data-mdb-backdrop="static" aria-hidden="true"
+  style="z-index: 999999;" [config]="{backdrop: true, ignoreBackdropClick: true}">
+  <div class="modal-dialog modal-full-height modal-right" role="document"
+    style="margin: 0px; padding: 0px; height: 100%; width: 100%;">
+    <div class="modal-content">
+      <div class="modal-body location_body">
+        <div>
+          <img src="assets/imgs/cancel.png" style="width: 20px;" (click)="closeInterval()">
+          <div class="upper_div">
+            <div #map id="map" class="map"></div>
+          </div>
+          <div class="lower_div">
+            <p class="head_lbl">{{util.translate('Order on the Way')}}</p>
+
+            <div class="driver_detail_div">
+              <div class="back_image"
+                [ngStyle]="{'background-image':'url('+api.mediaURL+dCover+'),url(assets/placeholder.jpg)'}">
+              </div>
+              <div style="padding-left: 20px;">
+                <p class="boy_name">{{driverName}}</p>
+                <p class="address">{{address}}</p>
+                <!-- <ion-button (click)="callDriver()" size="small" fill="outline">
+                {{util.translate('Call')}}
+              </ion-button> -->
+                <div class="btns" mdbWavesEffect (click)="callDriver()">
+                  {{util.translate('Call')}}
+                </div>
+              </div>
+            </div>
+
+            <p class="order_detail">{{orders.length}} {{util.translate('Items to deliver')}}
+              <span style="color: var(--ion-color-primary);position: absolute;right: 20px;"
+                *ngIf="util.cside ==='left'">{{util.currecny}} {{grandTotal}}</span>
+              <span style="color: var(--ion-color-primary);position: absolute;right: 20px;"
+                *ngIf="util.cside ==='left'">{{grandTotal}}{{util.currecny}}</span>
+            </p>
+            <p class="order_detail">{{util.translate('Order Status')}}<span class="order_status">{{status}}</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!loaded" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<div class="container main_content_div" *ngIf="loaded">
+  <label class="header_lbl">{{util.translate('Order Summary')}}</label>
+  <label class="res_location">{{util.translate('This order with')}} {{restName}} {{util.translate('was')}} {{status}}
+  </label>
+
+  <div class="line_div"></div>
+
+  <label class="res_location">{{address}}</label>
+
+  <div class="flex_div">
+    <label class="res_name" style="margin-top: 0px;">{{util.translate('Your Order')}}</label>
+    <label class="fav_lbl" (click)="trackMyOrder()" *ngIf="status =='ongoing' || status =='accepted' ">
+      {{util.translate('Track Order')}}
+    </label>
+  </div>
+
+  <!-- <div class="line_div"></div> -->
+
+  <span *ngFor="let item of orders">
+
+    <div *ngFor="let subItems of item.selectedItem;let j = index" class="subNames">
+      <label class="food_title">
+        {{item.name}} X
+        {{item.selectedItem[j].total}}</label>
+      <div *ngFor="let addods of subItems.item" class="flex_titles">
+        <p class="sub_name">
+          - {{addods.name}}
+        </p>
+        <p class="sub_name" *ngIf="util.cside ==='left'">
+          {{util.currecny}} {{addods.value}}
+        </p>
+        <p class="sub_name" *ngIf="util.cside ==='right'">
+          {{addods.value}} {{util.currecny}}
+        </p>
+      </div>
+    </div>
+
+    <div class="card_div" *ngIf="!item.selectedItem || !item.selectedItem.length">
+      <div class="flex_div">
+        <label class="food_title">{{item.name}} X {{item.quantiy}} </label>
+        <label class="food_price" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.quantiy * item.price}}</label>
+        <label class="food_price" *ngIf="util.cside ==='right'">{{item.quantiy * item.price}} {{util.currecny}} </label>
+      </div>
+
+    </div>
+
+  </span>
+
+  <label style="margin-top: 5px; font-weight: 600;display: flex; flex-direction: row; justify-content: space-between; ">
+    {{util.translate('Item Total')}}<span class="prise_lbl" *ngIf="util.cside ==='left'">
+      {{util.currecny}}{{total}}</span> <span class="prise_lbl" *ngIf="util.cside ==='right'"> {{total}}
+      {{util.currecny}}</span>
+  </label>
+  <label style="margin-top: 5px; font-weight: 600;display: flex; flex-direction: row; justify-content: space-between;"
+    *ngIf="coupon">{{util.translate('Coupon Discout')}} <span class="prise_lbl" *ngIf="util.cside ==='left'">
+      {{util.currecny}}{{dicount}}</span> <span class="prise_lbl" *ngIf="util.cside ==='right'"> {{dicount}}
+      {{util.currecny}}</span>
+  </label>
+  <label style="margin-top: 5px; font-size: 14px;display: flex; flex-direction: row; justify-content: space-between;">
+    {{util.translate('Delivery Charge')}} <span class="prise_lbl" *ngIf="util.cside ==='left'">
+      {{util.currecny}}{{serviceTax}}</span> <span class="prise_lbl" *ngIf="util.cside ==='right'"> {{serviceTax}}
+      {{util.currecny}}</span>
+  </label>
+  <label style="margin-top: 5px; font-size: 14px;display: flex; flex-direction: row; justify-content: space-between;">
+    {{util.translate('Grand Total')}} <span class="prise_lbl" *ngIf="util.cside ==='left'">
+      {{util.currecny}}{{grandTotal}}</span> <span class="prise_lbl" *ngIf="util.cside ==='right'"> {{grandTotal}}
+      {{util.currecny}}</span>
+  </label>
+  <div class="line_div"></div>
+
+  <label class="res_name">{{util.translate('Order Detail')}}</label>
+  <div class="line_div"></div>
+
+  <label class="head_gray">{{util.translate('Order Number')}}</label>
+  <label class="small_lbl">#{{id}}</label>
+  <label class="head_gray">{{util.translate('Order Notes')}}</label>
+  <label class="small_lbl">{{orderNotes}}</label>
+  <label class="head_gray">{{util.translate('Payment')}}</label>
+  <label class="small_lbl">{{util.translate('Paid')}} : {{paid}} </label>
+  <label class="head_gray">{{util.translate('Date')}}</label>
+  <label class="small_lbl">{{time}}</label>
+  <label class="head_gray">{{util.translate('Deliver to')}}</label>
+  <label class="small_lbl">{{deliveryAddress}}</label>
+
+  <div class="line_div"></div>
+
+  <label class="red_lbl" *ngIf="status =='created' ||status =='ongoing' || status =='accepted' " (click)="call()">
+    {{util.translate('Call Restaurant')}} {{restName}}</label>
+
+  <label class="red_lbl" *ngIf="status =='ongoing' || status =='accepted' " (click)="driverCall()">
+    {{util.translate('Call Driver')}} {{driverName}}</label>
+
+</div>
+<div class="container btn_div">
+  <div class="rates" mdbWavesEffect *ngIf="status ==='delivered'" (click)="presentAlertConfirm()">
+    {{util.translate('Rate Order')}}
+  </div>
+  <div class="btns" mdbWavesEffect *ngIf="status === 'created' ||status === 'ongoing' || status === 'accepted' "
+    (click)="changeStatus()">
+    {{util.translate('Cancel Order')}}
+  </div>
+</div>

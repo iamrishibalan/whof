@@ -1,0 +1,112 @@
+
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{util.translate('Please wait...')}}</p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{util.translate('Order Details')}}</h5>
+                <div class="orders">
+                    <div class="card_div">
+
+                        <div class="resto_detail">
+                            <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+ restCover+')'"></div>
+                            <div style="margin-left: 20px;">
+                                <p class="res_name">{{restName}}</p>
+                                <p class="res_location">
+                                    {{address}}
+                                </p>
+                            </div>
+
+                            <div style="text-align: center;margin: 10px;">
+                                <div class="ti-angle-double-right"></div>
+                            </div>
+
+                            <div class="back_image"
+                                [ngStyle]="{'background-image':'url('+api.mediaURL+userpic+'),url(assets/icon.png)'}">
+                            </div>
+                            <div style="margin-left: 20px;">
+                                <p class="res_name">{{username}}</p>
+                                <p class="res_location">
+                                    {{userAddress}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="line_div"></div>
+
+                        <div class="order_detail">
+                            <p class="head_gray">{{util.translate('ITEMS')}}</p>
+                            <div class="small_lbl">
+                                <!-- <span *ngFor="let order of orders;let ol = index">{{order.quantiy}}
+                                    X {{order.name}} </span> -->
+                                <span *ngFor="let order of orders;let ol = index">
+                                    <div *ngIf="!order.selectedItem || !order.selectedItem.length"
+                                        class="border_bottom">
+                                        <span>{{order.name}} X {{order.quantiy}} </span>
+
+                                        <span style="font-weight: normal;"
+                                            *ngIf="util.cside ==='left'">{{util.currecny}} {{order.price}} </span>
+                                        <span style="font-weight: normal;" *ngIf="util.cside ==='right'">{{order.price}}
+                                            {{util.currecny}} </span>
+                                    </div>
+
+                                    <div *ngFor="let subItems of order.selectedItem;let j = index" class="subNames">
+                                        <p class="food_title">{{order.name}} X {{order.selectedItem[j].total}}</p>
+                                        <div *ngFor="let addods of subItems.item" class="flex_titles">
+                                            <p class="sub_name">
+                                                - {{addods.name}}
+                                            </p>
+                                            <p class="sub_name" *ngIf="util.cside ==='left'">
+                                                {{util.currecny}} {{addods.value}}
+                                            </p>
+                                            <p class="sub_name" *ngIf="util.cside ==='right'">
+                                                {{addods.value}} {{util.currecny}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+                            <p class="head_gray">{{util.translate('ORDERED ON')}}</p>
+                            <p class="small_lbl">{{getDate(time)}} </p>
+                            <p class="head_gray">{{util.translate('Order Notes')}}</p>
+                            <p class="small_lbl">{{orderNotes}} </p>
+                            <p class="head_gray" *ngIf="coupon">{{util.translate('Discount')}}</p>
+                            <p class="small_lbl" *ngIf="coupon">
+                                <span *ngIf="util.cside ==='left'">{{util.currecny}} {{dicount}}</span>
+                                <span *ngIf="util.cside ==='right'"> {{dicount}} {{util.currecny}}</span>
+
+                            </p>
+                            <p class="head_gray">{{util.translate('TOTAL AMOUNT')}}</p>
+                            <p class="small_lbl" *ngIf="util.cside ==='left'"> {{util.currecny}} {{grandTotal}}</p>
+                            <p class="small_lbl" *ngIf="util.cside ==='right'"> {{grandTotal}} {{util.currecny}}</p>
+                        </div>
+
+                        <div class="line_div"></div>
+
+                        <div class="status_detail" *ngIf="status =='completed' || status == 'delivered'">
+                            <div class="deliver_div">
+                                {{util.translate('Delivered')}}
+                            </div>
+                        </div>
+                        <div class="status_detail" *ngIf="status =='rejected' || status == 'cancel'">
+                            <div class="deliver_div">
+                                {{util.translate('Your Order is')}} {{status}}
+                            </div>
+                        </div>
+                        <div class="status_detail"
+                            *ngIf="status =='created' || status =='ongoing' || status === 'accepted'">
+                            <div class="deliver_div">
+                                {{util.translate('Your Order is')}} {{status}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng2-toasty></ng2-toasty>

@@ -1,0 +1,18 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Choose your Location')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="div_map" #map></div>
+  <ion-button (click)="submit()" expand="block">
+    {{util.translate('Submit')}}
+  </ion-button>
+</ion-content>

@@ -1,0 +1,18 @@
+
+<ion-header class="ion-no-border">
+
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="contents">
+    <p class="header">{{util.translate('Access Your')}}</p>
+    <p class="subHeader">{{util.translate('Location')}}</p>
+    <img src="assets/map-location.png" alt="" class="imgs">
+    <ion-button (click)="getLocation()" expand="block" shape="round">
+      {{util.translate('Use Current Location')}}
+    </ion-button>
+    <ion-button (click)="customLocation()" expand="block" fill="clear" shape="round">
+      {{util.translate('Choose location')}}
+    </ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,32 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Select Shop')}}</ion-title>
+  </ion-toolbar>
+  <ion-searchbar [placeholder]="util.translate('Search by Store')" mode="ios" (ionChange)="onSearchChange($event)"
+    [debounce]="250" showCancelButton="never"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="card_div" *ngFor="let item of restaurants" (click)="goToAddReview(item)">
+      <div class="resto_detail">
+        <img [src]="api.mediaURL+item.cover" onError="this.src='assets/placeholder.jpg'" class="back_image" alt="">
+        <!-- <div class="back_image"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}"></div> -->
+        <div style="padding-left: 20px;">
+          <ion-label class="res_name">{{item.name}}</ion-label>
+          <ion-label class="res_location">{{item.address}}</ion-label>
+        </div>
+      </div>
+      <div class="line_div"></div>
+    </div>
+
+  </div>
+</ion-content>

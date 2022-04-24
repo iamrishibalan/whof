@@ -1,0 +1,42 @@
+
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}}</p>
+</ngx-spinner>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{api.translate('Manage Popup')}}</h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Status')}}</label>
+                        <select name="select" [(ngModel)]="status" class="form-control">
+                            <option value="1">{{api.translate('Open')}}</option>
+                            <option value="0">{{api.translate('Close')}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Message')}}</label>
+                        <textarea rows="5" cols="5" [(ngModel)]="name" class="form-control"
+                            [placeholder]="api.translate('Message')"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round" (click)="submit()">{{api.translate('Submit')}}</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

@@ -1,0 +1,63 @@
+
+<ion-content class="ion-padding">
+  <ion-slides mode="md" [options]="slideOpts">
+    <ion-slide>
+      <ion-button (click)="back()" fill="clear" class="backBtn">
+        <ion-icon slot="start" name="arrow-back-outline" color="primary"></ion-icon>
+      </ion-button>
+      <div class="emailForm">
+        <h2 class="ion-text-center">{{util.translate('Sign Up')}}</h2>
+        <p class="subtitle ion-text-center">{{util.translate('Enter your profile detail to')}}
+          <br>{{util.translate('access your account')}} </p>
+        <ion-item lines="none">
+          <ion-input type="email" [(ngModel)]="user.email" [placeholder]="util.translate('Email')"></ion-input>
+        </ion-item>
+        <ion-button class="btn_class" color="primary" (click)="emailValidation()" expand="block" [disabled]="isLogin">
+
+          <span *ngIf="!isLogin"> {{util.translate('Next')}}</span>
+          <ion-spinner name="circles" *ngIf="isLogin"></ion-spinner>
+        </ion-button>
+      </div>
+    </ion-slide>
+
+    <!-- <ion-slide>
+      <ion-button (click)="back()" fill="clear" class="backBtn">
+        <ion-icon slot="start" name="arrow-back-outline" color="primary"></ion-icon>
+      </ion-button>
+      <div class="emailForm">
+        <p class="subtitle ion-text-center">Create Strong Password for your account </p>
+        <ion-item lines="none">
+          <ion-input type="password" [(ngModel)]="user.password" placeholder="Password"></ion-input>
+        </ion-item>
+        <ion-button class="btn_class" color="primary" (click)="password()" expand="block">
+          Next
+        </ion-button>
+      </div>
+    </ion-slide> -->
+
+    <ion-slide>
+      <ion-button (click)="prev()" fill="clear" class="backBtn">
+        <ion-icon slot="start" name="arrow-back-outline" color="primary"></ion-icon>
+      </ion-button>
+      <div class="emailForm">
+        <ion-item lines="none">
+          <ion-input type="text" [(ngModel)]="user.first_name" [placeholder]="util.translate('First Name')"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-input type="text" [(ngModel)]="user.last_name" [placeholder]="util.translate('Last Name')"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-input type="number" [(ngModel)]="user.phone" [placeholder]="util.translate('Phone Number')"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="password" [(ngModel)]="user.password" [placeholder]="util.translate('Password')"></ion-input>
+        </ion-item>
+        <ion-button class="btn_class" color="primary" (click)="submit()" expand="block" [disabled]="isLogin">
+          <span *ngIf="!isLogin"> {{util.translate('Submit')}}</span>
+          <ion-spinner name="circles" *ngIf="isLogin"></ion-spinner>
+        </ion-button>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>

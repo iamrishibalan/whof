@@ -1,0 +1,115 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Payment')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="billing">
+    <div class="singleRow">
+      <ion-label class="headerTitle">{{util.translate('Item Total')}}</ion-label>
+      <ion-label class="price" *ngIf="util.cside ==='left'">{{util.currecny}} {{cart.totalPrice}}</ion-label>
+      <ion-label class="price" *ngIf="util.cside ==='right'"> {{cart.totalPrice}} {{util.currecny}}</ion-label>
+    </div>
+    <div class="singleRow" *ngIf="cart.discount && cart.coupon">
+      <ion-label class="headerTitle">{{util.translate('Discount')}}</ion-label>
+      <ion-label class="price" *ngIf="util.cside ==='left'"> - {{util.currecny}} {{cart.discount}}</ion-label>
+      <ion-label class="price" *ngIf="util.cside ==='right'"> - {{cart.discount}} {{util.currecny}}</ion-label>
+    </div>
+    <div class="singleRow">
+      <ion-label class="headerTitle">{{util.translate('Taxes & Charges')}} ({{cart.flatTax}} %) </ion-label>
+      <ion-label class="price" *ngIf="util.cside ==='left'">{{util.currecny}} {{cart.orderTax}}</ion-label>
+      <ion-label class="price" *ngIf="util.cside ==='right'"> {{cart.orderTax}} {{util.currecny}}</ion-label>
+    </div>
+    <div class="singleRow" *ngIf="this.cart.cart[0].veg != '5'">
+      <ion-label class="headerTitle">{{util.translate('Delivery Charges')}}</ion-label>
+      <ion-label class="price" *ngIf="util.cside ==='left'">{{util.currecny}} {{cart.deliveryPrice}}</ion-label>
+      <ion-label class="price" *ngIf="util.cside ==='right'"> {{cart.deliveryPrice}} {{util.currecny}}</ion-label>
+    </div>
+
+    <div class="singleRow">
+      <ion-label class="headerTotal boldClass">{{util.translate('Grand Total')}}</ion-label>
+      <ion-label class="priceTotal boldClass" *ngIf="util.cside ==='left'">{{util.currecny}} {{cart.grandTotal}}
+      </ion-label>
+      <ion-label class="priceTotal boldClass" *ngIf="util.cside ==='right'"> {{cart.grandTotal}} {{util.currecny}}
+      </ion-label>
+    </div>
+    <div class="singleRow" *ngIf="this.cart.cart[0].veg == '5'">
+      <ion-label class="headerTotal boldClass">Booking Time&Date</ion-label>
+      <ion-label class="priceTotal" style="font-size: 13px;">{{times}} | {{dates}}</ion-label>
+    </div>
+  </div>
+  <div class="header">
+    <ion-label class="title">{{util.translate('Payment Options')}}</ion-label>
+  </div>
+  <!-- <ion-item (click)="openStripe()" lines="none" *ngIf="havePayment && haveStripe">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/stripe.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.translate('Pay with Stripe')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item> -->
+
+  <ion-item (click)="createOrder()" lines="none" *ngIf="havePayment && haveCOD">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/cod.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.translate('Cash on Delivery')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item>
+
+  <!-- <ion-item (click)="paypalPayment()" lines="none" *ngIf="havePayment && havePayPal">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/paypal.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.translate('Pay with PayPal')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item> -->
+
+  <!-- <ion-item (click)="paytm()" lines="none" *ngIf="havePayment && havePayTM">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/paytm.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.translate('Pay with PayTM')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item> -->
+
+
+  <!-- <ion-item (click)="instaPay()" lines="none" *ngIf="havePayment && haveInstamojo">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/instamojoapp.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.translate('Pay with Instamojo')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item> -->
+
+  <!-- <ion-item (click)="proceed()" lines="none" *ngIf="havePayment && haveRazor">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/razor.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.translate('Pay with RazorPay')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item> -->
+
+  <!-- <ion-item (click)="paystackPay()" lines="none" *ngIf="havePayment && havepayStack">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/paystack.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.translate('Pay with PayStack')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item> -->
+
+  <!-- <ion-item (click)="flutterpay()" lines="none" *ngIf="havePayment && havepayStack">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/flutter.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.translate('Pay with Flutterwave')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item> -->
+</ion-content>

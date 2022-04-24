@@ -1,0 +1,175 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{util.translate('Cart')}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="util.openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="mainContent">
+    <div class="noData" *ngIf="!cart.cart?.length">
+      <img src="assets/runing.gif" alt="" class="noDataImg">
+      <ion-label>{{util.translate('Your Cart is Empty')}}</ion-label>
+      <ion-label>{{util.translate('Please Place your Booking')}}</ion-label>
+      <!-- <ion-button (click)="getCart()" expand="block" fill="outline">
+        {{util.translate('Browse your favourite restaurants')}}
+      </ion-button> -->
+    </div>
+    <div *ngIf="cart.cart?.length">
+      <ion-row style="padding-bottom: 10px; border-bottom: 1px solid lightgray;"
+        *ngIf="cart.cartStoreInfo && cart.cartStoreInfo.cover && cart.cart[0].restId === cart.cartStoreInfo.uid">
+        <ion-col size="4">
+          <div class="image_div"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+cart.cartStoreInfo.cover+'),url(assets/placeholder.jpg)'}">
+          </div>
+        </ion-col>
+        <ion-col size="8">
+          <ion-label class="restname">{{cart.cartStoreInfo.name}}</ion-label>
+          <ion-label class="address">{{cart.cartStoreInfo.address}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <div class="card_div">
+        <div class="card" *ngFor="let item of cart.cart;let i = index">
+          <div class="mainCat" *ngIf="item.quantiy > 0 && !item.selectedItem?.length">
+            <div class="image_div"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}"></div>
+            <div class="desc_div">
+              <ion-label class="heading_lbl">
+                {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+              </ion-label>
+              <div class="ratting">
+                <ion-icon [name]="item.ratting >= 1 ? 'star-outline':'star'"
+                  [color]="item.ratting >= 1 ? 'warning':'medium'">
+                </ion-icon>
+                <ion-icon [name]="item.ratting >= 2 ? 'star-outline':'star'"
+                  [color]="item.ratting >= 2 ? 'warning':'medium'">
+                </ion-icon>
+                <ion-icon [name]="item.ratting >= 3 ? 'star-outline':'star'"
+                  [color]="item.ratting >= 3 ? 'warning':'medium'">
+                </ion-icon>
+                <ion-icon [name]="item.ratting >= 4 ? 'star-outline':'star'"
+                  [color]="item.ratting >= 4 ? 'warning':'medium'">
+                </ion-icon>
+                <ion-icon [name]="item.ratting >= 5 ? 'star-outline':'star'"
+                  [color]="item.ratting >= 5 ? 'warning':'medium'">
+                </ion-icon>
+                ( {{totalRatting}} {{util.translate('Rattings')}} )
+              </div>
+              <ion-label class="small_lbl">
+                {{ (item.details.length>30)? (item.details | slice:0:30)+'..':(item.details) }}
+              </ion-label>
+              <ion-label class="heading_lbl" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.price}}</ion-label>
+              <ion-label class="heading_lbl" *ngIf="util.cside ==='right'"> {{item.price}} {{util.currecny}}</ion-label>
+            </div>
+            <div class="cartBtn2">
+              <ion-button (click)="removeQ(i)" fill="clear" size="small">
+                <ion-icon name="remove"></ion-icon>
+              </ion-button>
+              <p class="qunitity">{{item.quantiy}}</p>
+              <ion-button (click)="addQ(i)" fill="clear" size="small">
+                <ion-icon name="add"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+
+          <div *ngIf="item.quantiy > 0 && item.selectedItem?.length">
+            <div class="mainCat" *ngFor="let subItems of item.selectedItem;let j = index"
+              style="margin: 10px 0px !important;">
+              <div class="image_div"
+                [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}">
+              </div>
+              <div class="desc_div">
+                <ion-label class="heading_lbl">{{item.name}}</ion-label>
+                <p *ngFor="let addods of subItems.item" style="margin: 0px;font-size: 10px;color: black;">
+                  - {{addods.name}}
+                  <span style="color: black;" *ngIf="util.cside ==='left'"> {{util.currecny}} {{addods.value}}</span>
+                  <span style="color: black;" *ngIf="util.cside ==='right'"> {{addods.value}} {{util.currecny}}</span>
+                </p>
+              </div>
+              <div class="cartBtn2">
+                <ion-button (click)="removeQAddos(i,j)" fill="clear" size="small">
+                  <ion-icon name="remove"></ion-icon>
+                </ion-button>
+                <p class="qunitity">{{subItems.total}}</p>
+                <ion-button (click)="addQAddos(i,j)" fill="clear" size="small">
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!--  *ngIf="cart.cart[0].veg !='5'"-->
+
+      <ion-textarea *ngIf="cart.cart[0].veg !='5'"  style="font-size: 14px;background: #f3f3f3; color: rgb(0, 0, 0);" [(ngModel)]="cart.orderNotes"
+        [placeholder]="util.translate('Add special cooking instructions')" rows="5"></ion-textarea>
+     <div *ngIf="cart.cart[0].veg !='5'" >
+      <div class="coupones" (click)="openCoupon()" *ngIf="!cart.coupon">
+        <img src="assets/discount.png" class="badge" />
+        <ion-label class="title">{{util.translate('Apply coupon code')}} <br>
+        </ion-label>
+      </div>
+     </div> 
+
+      <div class="coupones" *ngIf="cart.coupon && cart.coupon.code">
+        <ion-label class="title" *ngIf="cart.coupon && cart.coupon.code">{{util.translate('Coupon Applied')}}<br>
+        </ion-label>
+        <ion-icon name="close-circle-outline" (click)="cart.coupon = null;cart.calcuate()" class="closedIcon">
+        </ion-icon>
+      </div>
+
+      <div class="billing">
+        <div class="singleRow">
+          <ion-label class="headerTitle">{{util.translate('Item Total')}}</ion-label>
+          <ion-label class="price" *ngIf="util.cside ==='left'">{{util.currecny}} {{cart.totalPrice}}</ion-label>
+          <ion-label class="price" *ngIf="util.cside ==='right'"> {{cart.totalPrice}} {{util.currecny}}</ion-label>
+        </div>
+        <div class="singleRow" *ngIf="cart.discount && cart.coupon">
+          <ion-label class="headerTitle">{{util.translate('Discount')}}</ion-label>
+          <ion-label class="price" *ngIf="util.cside ==='left'"> - {{util.currecny}} {{cart.discount}}</ion-label>
+          <ion-label class="price" *ngIf="util.cside ==='right'"> - {{cart.discount}} {{util.currecny}} </ion-label>
+        </div>
+        <div class="singleRow">
+          <ion-label class="headerTitle">{{util.translate('Taxes & Charges')}} ({{cart.flatTax}} %) </ion-label>
+          <ion-label class="price" *ngIf="util.cside ==='left'">{{util.currecny}} {{cart.orderTax}}</ion-label>
+          <ion-label class="price" *ngIf="util.cside ==='right'">{{cart.orderTax}} {{util.currecny}} </ion-label>
+        </div>
+        <div class="singleRow"  *ngIf="cart.cart[0].veg =='5'" >
+          <ion-label class="headerTitle">Booking Time & Date </ion-label>
+          <ion-label class="price" > {{times}}  |  {{dates}}</ion-label>
+        </div>
+      </div>
+      <p class="instructions" *ngIf="cart.cart[0].veg !='5'" >
+        {{util.translate('Orders once placed cannot be cancelled and are non-refundable')}}
+      </p>
+    </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="cart.cart?.length" >
+  <ion-toolbar color="primary" (click)="checkout()" *ngIf="cart.cart[0].veg =='5'">
+    <ion-label color="light">{{cart.totalItem}} {{util.translate('ITEM')}}</ion-label>
+    <ion-label color="light" *ngIf="util.cside ==='left'"> {{util.currecny}}{{cart.grandTotal}}
+      {{util.translate('total price')}}</ion-label>
+    <ion-label color="light" *ngIf="util.cside ==='right'">
+      {{cart.grandTotal}} {{util.currecny}} {{util.translate('total price')}}</ion-label>
+    <ion-button slot="end" fill="clear" color="light">
+      {{util.translate('Checkout')}}
+    </ion-button>
+  </ion-toolbar>
+
+  <ion-toolbar color="primary" (click)="checkouts()" *ngIf="cart.cart[0].veg !='5'">
+    <ion-label color="light">{{cart.totalItem}} {{util.translate('ITEM')}}</ion-label>
+    <ion-label color="light" *ngIf="util.cside ==='left'"> {{util.currecny}}{{cart.grandTotal}}
+      {{util.translate('total price')}}</ion-label>
+    <ion-label color="light" *ngIf="util.cside ==='right'">
+      {{cart.grandTotal}} {{util.currecny}} {{util.translate('total price')}}</ion-label>
+    <ion-button slot="end" fill="clear" color="light">
+      {{util.translate('Checkout')}}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

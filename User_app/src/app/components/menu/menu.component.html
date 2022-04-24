@@ -1,0 +1,4 @@
+
+<ion-item *ngFor="let item of cates" lines="none" (click)="selected(item)">
+  <ion-label [ngClass]="id === item.id ? 'selected':'normal'">{{item.name}}</ion-label>
+</ion-item>

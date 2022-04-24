@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Availability Time</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-button (click)="submit1()" expand="block">
+    Choose Date {{date1 | date: 'dd/MM/yyyy' }}
+  </ion-button>
+  <ion-card id="fadeIn" *ngIf="hide">
+    <ion-calendar [(ngModel)]="date1" (change)="onChange($event)" [type]="type" [format]="'YYYY-MM-DD'">
+    </ion-calendar>
+  </ion-card>
+
+  <div *ngIf="timeshow">
+    <h2 style="text-align: center; color:grey; font-size: 16px;">Available Time</h2>
+  </div>
+
+
+  <ion-card *ngIf="timeshow">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" *ngFor="let time of Bookingtimes">
+          <div class="spancont" [ngStyle]="{'backgroundColor': (time.action)? '': 'rgb(223 223 223)'}" (click)="choosetime($event)">
+            {{time.times}}
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card>
+</ion-content>
+
+<ion-footer (click)="Booknow()">
+  <ion-toolbar color="primary" style="    text-align-last: center;">
+    <ion-button fill="clear" color="light">
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+      Book Now
+    </ion-button>
+    <ion-ripple-effect type="bounded"></ion-ripple-effect>
+  </ion-toolbar>
+</ion-footer>

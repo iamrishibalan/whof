@@ -1,0 +1,51 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Coupons')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="noData" *ngIf="!dummy?.length && !list?.length" [style.backgroundImage]="'url(assets/nothing.jpg)'">
+  </div>
+  <div *ngFor="let item of dummy">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+  <ion-row *ngFor="let item of list" class="coupons" (click)="claim(item)">
+    <ion-col size="12" class="info">
+      <p class="title">
+        <span class="code">{{util.translate('CODE :')}} {{item.code}} </span><br>
+        <span class="expire">{{expire(item.expire)}}</span><br>
+        <span class="desc">{{util.translate('Get')}} {{item.discount}} {{item.type ==='per' ? '%' : util.currecny}} to
+          {{item.upto}}
+          {{item.type ==='per' ? '%' : util.currecny}} {{util.translate('discount on minimum order')}}
+          {{util.translate('of')}}
+          {{item.min}} {{util.currecny}}
+        </span>
+      </p>
+    </ion-col>
+    <ion-badge color="primary" class="ion-padding" mode="ios">{{util.translate('CLAIM')}}</ion-badge>
+  </ion-row>
+</ion-content>

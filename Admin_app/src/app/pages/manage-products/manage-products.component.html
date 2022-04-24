@@ -1,0 +1,161 @@
+
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+   <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}}</p>
+</ngx-spinner>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="card">
+         <div class="card-body">
+            <h5>{{api.translate('Product Details')}}</h5>
+         </div>
+         <div class="card-body reset-table p-t-0">
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Name')}}</label>
+                  <input type="text" [(ngModel)]="name" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Name')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Real price')}}</label>
+                  <input type="text" [(ngModel)]="realPrice" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Real price')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Sell price')}}</label>
+                  <input type="text" [(ngModel)]="sellPrice" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Sell price')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Discount')}}</label>
+                  <input type="text" [(ngModel)]="discount" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Discount')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Exp Date')}}</label>
+                  <input type="text" [(ngModel)]="exp_date" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Exp Date')">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_gram">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Gram')}}</label>
+                  <input type="text" [(ngModel)]="gram" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Gram')">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_kg">
+               <div class="col-sm-12">
+                  <label>{{api.translate('KG')}}</label>
+                  <input type="text" [(ngModel)]="kg" disabled="true" class="form-control"
+                     [placeholder]="api.translate('KG')">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_liter">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Liter')}}</label>
+                  <input type="text" [(ngModel)]="liter" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Liter')">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_ml">
+               <div class="col-sm-12">
+                  <label>{{api.translate('ML')}}</label>
+                  <input type="text" [(ngModel)]="ml" disabled="true" class="form-control"
+                     [placeholder]="api.translate('ML')">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_pcs">
+               <div class="col-sm-12">
+                  <label>{{api.translate('PCs')}}</label>
+                  <input type="text" [(ngModel)]="pcs" disabled="true" class="form-control"
+                     [placeholder]="api.translate('PCs')">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_pcs">
+               <div class="col-sm-12">
+                  <label>{{api.translate('PCs')}}</label>
+                  <input type="text" [(ngModel)]="pcs" disabled="true" class="form-control"
+                     [placeholder]="api.translate('PCs')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Kind')}}</label>
+                  <input type="text" [value]="veg?'Veg':'Non Veg' " disabled="true" class="form-control"
+                     [placeholder]="api.translate('PCs')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Rating')}}</label>
+                  <input type="text" [(ngModel)]="rating" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Rating')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Total Rating')}}</label>
+                  <input type="text" [(ngModel)]="total_rating" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Total Rating')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Descriptions')}}</label>
+                  <textarea rows="5" cols="5" [(ngModel)]="description" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Descriptions')"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Key feature')}}</label>
+                  <textarea rows="5" cols="5" [(ngModel)]="key_features" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Key feature')"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{api.translate('Disclaimer')}}</label>
+                  <textarea rows="5" cols="5" [(ngModel)]="disclaimer" disabled="true" class="form-control"
+                     [placeholder]="api.translate('Disclaimer')"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div *ngFor="let item of images">
+                  <div class="back_image" *ngIf="item !==''"
+                     [ngStyle]="{'background-image':'url('+api.mediaURL+item+')'}"></div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+</div>
+<ng2-toasty></ng2-toasty>

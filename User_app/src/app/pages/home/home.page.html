@@ -1,0 +1,222 @@
+
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="changeLocation()">
+        <ion-icon slot="icon-only" name="location"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title (click)="changeLocation()"> {{util.cityAddress}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="util.openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <div class="div_searchbar">
+    <ion-searchbar animated="true" mode="ios" [placeholder]="util.translate('Search Restaurants')"
+      (ionChange)="onSearchChange($event)" [debounce]="250" class="search_bar"></ion-searchbar>
+  </div>
+  <div class="chips_div animated fadeInDown" *ngIf="allRest?.length">
+    <ion-label class="chip" *ngFor="let item of chips;let i = index" (click)="addFilter(i)">{{item}}</ion-label>
+  </div>
+</ion-header>
+
+<ion-content>
+  <div class="noData" *ngIf="!dummy?.length && !allRest?.length" [style.backgroundImage]="'url(assets/nothing.jpg)'">
+  </div>
+  <p style="font-weight: bold;text-align: center;" *ngIf="!dummy?.length && !allRest?.length">
+    {{util.translate('No Restaurants Found!')}}
+  </p>
+  <div *ngIf="util.home_type ==='0'" class="main_content_div1">
+    <ion-slides [options]="slideOpts" *ngIf="banners?.length && allRest?.length">
+      <ion-slide *ngFor="let item of banners">
+        <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+ item.banner+')'"></div>
+      </ion-slide>
+    </ion-slides>
+    <ion-slides [options]="slideOpts">
+      <ion-slide *ngFor="let item of dummyBanners">
+        <ion-skeleton-text animated style="width: 100%;height: 100px;margin-left: 10px;border-radius: 5px;">
+        </ion-skeleton-text>
+      </ion-slide>
+    </ion-slides>
+
+    <div *ngFor="let item of dummy">
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div class="card_div">
+      <ion-row
+        [className]="item.isOpen === false || item.isClosed === '0' ? 'cardClosed ion-no-padding':'card ion-no-padding'"
+        *ngFor="let item of allRest">
+        <ion-col size="4">
+          <div class="image_div" (click)="openMenu(item)"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}">
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <div class="desc_div" (click)="openMenu(item)">
+            <ion-label class="heading_lbl">
+              {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+            </ion-label>
+            <ion-label class="small_lbl">
+              {{ (item.descriptions.length>30)? (item.descriptions | slice:0:30)+'..':(item.descriptions) }}
+            </ion-label>
+            <ion-label class="small_lbl">{{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+            </ion-label>
+            <ion-label class="small_lbl">{{item.dish}} {{util.translate('per person')}} | {{item.time}}
+              {{util.translate('min')}} </ion-label>
+          </div>
+        </ion-col>
+        <ion-col size="2">
+          <div class="ratting">
+            <ion-label class="rateNumber">{{item.rating}}</ion-label>
+          </div>
+          <p class="closed" *ngIf="item && item.isOpen === false || item.isClosed === '0'">{{util.translate('Closed')}}
+          </p>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+
+  <div *ngIf="util.home_type ==='1'" class="main_content_div2">
+    <ion-slides [options]="slideOpts" *ngIf="banners?.length && allRest?.length">
+      <ion-slide *ngFor="let item of banners" (click)="openOffers(item)">
+        <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+ item.banner+')'"></div>
+      </ion-slide>
+    </ion-slides>
+    <ion-slides [options]="slideOpts">
+      <ion-slide *ngFor="let item of dummyBanners">
+        <ion-skeleton-text animated style="width: 100%;height: 100px;margin-left: 10px;border-radius: 5px;">
+        </ion-skeleton-text>
+      </ion-slide>
+    </ion-slides>
+    <ion-card *ngFor="let item of dummy">
+      <ion-skeleton-text animated
+        style="width: 100%;height: 150px;border-radius: 5px;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;">
+      </ion-skeleton-text>
+      <ion-card-content>
+        <ion-badge class="number_badge" color="light" mode="ios">
+          <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+        </ion-badge>
+        <ion-label class="bold_lbl">
+          <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+        </ion-label>
+        <ion-label class="small_lbl">
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </ion-label>
+        <div class="flex_div">
+          <ion-label class="distance_lbl">
+            <ion-skeleton-text animated style="width: 25px;"></ion-skeleton-text>
+          </ion-label>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngFor="let item of allRest" (click)="openMenu(item)">
+      <div class="image_back"
+        [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}">
+      </div>
+      <ion-card-content>
+        <ion-badge class="number_badge" mode="ios"
+          [ngStyle]="{'background-color': item.rating>=4?'#00a573':item.rating>=3 && item.rating<1?'#fcb813':'#d24141'}">
+          {{item.rating}}</ion-badge>
+        <ion-label class="bold_lbl">{{item.name}}</ion-label>
+        <ion-label class="small_lbl">{{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+        </ion-label>
+        <div class="flex_div">
+          <ion-label class="distance_lbl">
+            {{ (item.descriptions.length>80)? (item.descriptions | slice:0:80)+'..':(item.descriptions) }}
+          </ion-label>
+          <ion-label class="distance_lbl2">
+            {{item.dish}} {{util.translate('per person')}} | {{item.time}} {{util.translate('min')}}
+          </ion-label>
+        </div>
+
+        <ion-badge class="storeTime" *ngIf="item && item.isOpen === false || item.isClosed === '0'" mode="ios"
+          [ngStyle]="{'background-color': '##F53747'}">
+          {{util.translate('Closed')}}
+        </ion-badge>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="util.home_type ==='2'" class="main_content_div3">
+    <ion-slides [options]="slideOpts" *ngIf="banners?.length && allRest?.length">
+      <ion-slide *ngFor="let item of banners" (click)="openOffers(item)">
+        <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+ item.banner+')'"></div>
+      </ion-slide>
+    </ion-slides>
+    <ion-slides [options]="slideOpts">
+      <ion-slide *ngFor="let item of dummyBanners">
+        <ion-skeleton-text animated style="width: 100%;height: 100px;margin-left: 10px;border-radius: 5px;">
+        </ion-skeleton-text>
+      </ion-slide>
+    </ion-slides>
+    <ion-row *ngFor="let item of dummy">
+      <ion-col size="4">
+        <ion-skeleton-text animated style="width: 100px;height:100px;"></ion-skeleton-text>
+      </ion-col>
+      <ion-col size="8">
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of allRest" class="main_div" (click)="openMenu(item)">
+      <ion-col size="4" class="image_back"
+        [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}"></ion-col>
+      <ion-col size="8">
+        <ion-label class="heading_lbl">
+          {{ (item.name.length>30)? (item.name | slice:0:30)+'..':(item.name) }}
+        </ion-label>
+
+        <ion-label class="small_lbl"> {{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+        </ion-label>
+        <div class="more_data">
+          <div class="information">
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-label class="lbl">
+              {{item.rating}}
+            </ion-label>
+          </div>
+          <div class="information">
+            <ion-icon name="time-outline"></ion-icon>
+            <ion-label class="lbl">
+              {{item.time}} {{util.translate('MINS')}}
+            </ion-label>
+          </div>
+          <div class="information">
+            <ion-icon name="cash-outline"></ion-icon>
+            <ion-label class="lbl">
+              {{item.dish}} {{util.translate('Per Person')}}
+            </ion-label>
+          </div>
+        </div>
+        <ion-label class="clbl" *ngIf="item && item.isOpen === false || item.isClosed === '0'">
+          {{util.translate('Closed')}}</ion-label>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

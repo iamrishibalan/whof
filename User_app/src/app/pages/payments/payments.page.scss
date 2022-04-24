@@ -1,0 +1,33 @@
+
+.header {
+    background: #f3f3f3;
+    padding: 20px;
+    .title {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+}
+.billing {
+    padding: 5px 10px;
+    .singleRow {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0px;
+        border-bottom: 1px dashed lightgray;
+        .headerTitle {
+            font-size: 0.8rem;
+        }
+        .boldClass {
+            font-weight: bold;
+        }
+        .headerTotal {
+            font-size: 1rem;
+        }
+        .priceTotal {
+            font-size: 1rem;
+        }
+        .price {
+            font-size: 0.8rem;
+        }
+    }
+}

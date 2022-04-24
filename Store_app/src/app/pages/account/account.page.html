@@ -1,0 +1,102 @@
+<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="util.openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="main_content_div">
+
+    <div class="back_image" *ngIf="Storedetails" [style.backgroundImage]="'url(assets/imgs/back_image.jpg)'"></div>
+    <div class="back_image" *ngIf="saloondetail" [style.backgroundImage]="'url(assets/neeed.jpg)'"></div>
+    <div class="white_div"
+      [ngStyle]="{'background-image':'url('+api.mediaURL+util.store.cover+'),url(assets/placeholder.jpg)'}"></div>
+
+    <div class="content_div">
+      <ion-label class="usernane">{{util.store.name}}</ion-label>
+
+      <ion-label class="location">
+        <ion-icon class="pin" name="location-outline"></ion-icon>{{util.store.address}}
+      </ion-label>
+
+      <ion-label class="location" style="color: black;">{{util.store.open_time}}AM - {{util.store.close_time}}PM</ion-label>
+
+      <div class="flex_div">
+        <ion-label (click)="goToAddCategoty()" *ngIf="Storedetails">{{util.translate('Add Category')}}</ion-label>
+        <ion-label (click)="goToAddCategoty()" *ngIf="saloondetail">{{util.translate('Saloon Category')}}</ion-label>
+        <ion-label (click)="AddFoods()" *ngIf="Storedetails">{{util.translate('Add Food')}}</ion-label>
+        <ion-label (click)="AddService()" *ngIf="saloondetail">{{util.translate('Add Service')}}</ion-label>
+        <ion-label (click)="venueDetails()">{{util.translate('Edit Profile')}}</ion-label>
+      </div>
+
+    </div>
+    <div class="options">
+      <!-- <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="orders()">
+        <ion-icon name="calendar-outline" slot="start"></ion-icon>
+        <ion-label>{{util.translate('Orders')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item> -->
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="reviews()">
+        <ion-icon name="cash-outline" slot="start"></ion-icon>
+        <ion-label>{{util.translate('Reviews')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+
+
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="reset()">
+        <ion-icon name="key-outline" slot="start"></ion-icon>
+        <ion-label>{{util.translate('Change Password')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToAbout()">
+        <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+        <ion-label> {{util.translate('About Us')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToContact()">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label> {{util.translate('Contact Us')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goLangs()">
+        <ion-icon name="language-outline" slot="start"></ion-icon>
+        <ion-label> {{util.translate('Languages')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToChats()">
+        <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
+        <ion-label> {{util.translate('Chats')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goFaqs()">
+        <ion-icon name="flag-outline" slot="start"></ion-icon>
+        <ion-label> {{util.translate('FAQs')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goHelp()">
+        <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+        <ion-label> {{util.translate('Help')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+
+      <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="logout()">
+        <ion-icon name="power-outline" slot="start"></ion-icon>
+        <ion-label> {{util.translate('Log Out')}} </ion-label>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

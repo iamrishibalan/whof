@@ -1,0 +1,19 @@
+
+<header class="main_header">
+  <div class="container">
+    <div class="header_items">
+      <div class="brand_items">
+        <a class="navbar-brand" (click)="goToHome()">
+          <img src="assets/icon.png" class="logo_img">
+        </a>
+        <label class="state_lbl" (click)="util.publishModalPopup('location')">
+          {{getAddress()}} <mdb-icon fas icon="angle-down">
+          </mdb-icon>
+        </label>
+      </div>
+      <div class="menu_btn" mdbWavesEffect (click)="util.publishModalPopup('sideMenu')">
+        <mdb-icon fas icon="align-right"></mdb-icon>
+      </div>
+    </div>
+  </div>
+</header>

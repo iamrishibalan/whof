@@ -1,0 +1,25 @@
+node_modules
+Admin_app/node_modules
+Admin_app/dist/
+Driver_app/node_modules
+Driver_app/platforms
+Driver_app/www
+Store_app/node_modules
+Store_app/platforms
+Store_app/www
+User_app/node_modules
+User_app/platforms
+User_app/www
+Web_version/node_modules
+Web_version/www
+dist
+.tmp
+.sass-cache
+**/bower_components or sometimes it is lib/**
+platforms
+plugins
+*.swp
+*.swo
+*.log
+*.DS_Store
+Admin_app/dist/store-app-admin

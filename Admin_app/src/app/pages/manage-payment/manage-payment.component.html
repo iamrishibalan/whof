@@ -1,0 +1,194 @@
+
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}}</p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5> {{name}} </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <div class="form-group row" *ngIf="id === '1'">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Environment')}}</label>
+                        <select name="select" [(ngModel)]="env" class="form-control">
+                            <option value="1">{{api.translate('Production')}}</option>
+                            <option value="0">{{api.translate('Sandbox')}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Test Key')}}</label>
+                        <input type="text" [(ngModel)]="stripe.test" class="form-control"
+                            [placeholder]="api.translate('Test Key')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Live Keys')}}</label>
+                        <input type="text" [(ngModel)]="stripe.live" class="form-control"
+                            [placeholder]="api.translate('Live Key')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Currency code')}}</label>
+                        <input type="text" [(ngModel)]="stripe.code" class="form-control"
+                            [placeholder]="api.translate('USD')">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="id === '3'">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Environment')}}</label>
+                        <select name="select" [(ngModel)]="env" class="form-control">
+                            <option value="1">{{api.translate('Production')}}</option>
+                            <option value="0">{{api.translate('Sandbox')}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Test Key')}}</label>
+                        <input type="text" [(ngModel)]="paypal.test" class="form-control"
+                            [placeholder]="api.translate('Client ID Sandbox')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Live Keys')}}</label>
+                        <input type="text" [(ngModel)]="paypal.live" class="form-control"
+                            [placeholder]="api.translate('Client ID Production')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Currency code')}}</label>
+                        <input type="text" [(ngModel)]="paypal.code" class="form-control"
+                            [placeholder]="api.translate('USD')">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="id === '4'">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Environment')}}</label>
+                        <select name="select" [(ngModel)]="env" class="form-control">
+                            <option value="1">{{api.translate('Production')}}</option>
+                            <option value="0">{{api.translate('Sandbox')}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Test Key')}}</label>
+                        <input type="text" [(ngModel)]="razorPay.test" class="form-control"
+                            [placeholder]="api.translate('Client ID Sandbox')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Live Keys')}}</label>
+                        <input type="text" [(ngModel)]="razorPay.live" class="form-control"
+                            [placeholder]="api.translate('Client ID Production')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Currency code')}}</label>
+                        <input type="text" [(ngModel)]="razorPay.code" class="form-control"
+                            [placeholder]="api.translate('USD')">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="id === '5'">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Environment')}}</label>
+                        <select name="select" [(ngModel)]="env" class="form-control">
+                            <option value="1">{{api.translate('Production')}}</option>
+                            <option value="0">{{api.translate('Test')}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Merchant ID')}}</label>
+                        <input type="text" [(ngModel)]="payTm.id" class="form-control"
+                            [placeholder]="api.translate('Merchant ID')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Merchant Key')}}</label>
+                        <input type="text" [(ngModel)]="payTm.key" class="form-control"
+                            [placeholder]="api.translate('Merchant Key')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Currency code')}}</label>
+                        <input type="text" [(ngModel)]="payTm.code" class="form-control"
+                            [placeholder]="api.translate('USD')">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="id === '6'">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Environment')}}</label>
+                        <select name="select" [(ngModel)]="env" class="form-control">
+                            <option value="1">{{api.translate('Production')}}</option>
+                            <option value="0">{{api.translate('Test')}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Private API Key')}}</label>
+                        <input type="text" [(ngModel)]="instamojo.key" class="form-control"
+                            [placeholder]="api.translate('Private API Key')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Private Auth Token')}}</label>
+                        <input type="text" [(ngModel)]="instamojo.token" class="form-control"
+                            [placeholder]="api.translate('Private Auth Token')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Currency code')}}</label>
+                        <input type="text" [(ngModel)]="instamojo.code" class="form-control"
+                            [placeholder]="api.translate('USD')">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="id === '7'">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Environment')}}</label>
+                        <select name="select" [(ngModel)]="env" class="form-control">
+                            <option value="1">{{api.translate('Production')}}</option>
+                            <option value="0">{{api.translate('Test')}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label> {{api.translate('Secret Key')}}</label>
+                        <input type="text" [(ngModel)]="paystack.sk" class="form-control"
+                            [placeholder]="api.translate('Secret Key')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Public Key')}}</label>
+                        <input type="text" [(ngModel)]="paystack.pk" class="form-control"
+                            [placeholder]="api.translate('Public Key')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Currency code')}}</label>
+                        <input type="text" [(ngModel)]="paystack.code" class="form-control"
+                            [placeholder]="api.translate('NGN')">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="id === '8'">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Environment')}}</label>
+                        <select name="select" [(ngModel)]="env" class="form-control">
+                            <option value="1">{{api.translate('Production')}}</option>
+                            <option value="0">{{api.translate('Test')}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Public Key')}}</label>
+                        <input type="text" [(ngModel)]="flutterwave.pk" class="form-control"
+                            [placeholder]="api.translate('Public Key')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Currency code')}}</label>
+                        <input type="text" [(ngModel)]="flutterwave.code" class="form-control"
+                            [placeholder]="api.translate('NGN')">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round" (click)="update()">{{api.translate('Update')}}</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng2-toasty></ng2-toasty>

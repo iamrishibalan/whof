@@ -1,0 +1,114 @@
+
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}}</p>
+</ngx-spinner>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{api.translate('All Products')}}</h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{api.translate('Search')}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control form-control-round"
+                            [placeholder]="api.translate('Search products')" (input)="search($event.target.value)">
+                    </div>
+
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{api.translate('ID')}}</th>
+                                <th>{{api.translate('Cover')}}</th>
+                                <th (click)="sortByName()">{{api.translate('Name')}} <i class="ti-angle-down"></i> </th>
+                                <th>{{api.translate('Price')}} </th>
+                                <th (click)="sortByRating()">{{api.translate('Rating')}} <i class="ti-angle-down"></i>
+                                </th>
+                                <th>{{api.translate('Status')}}</th>
+                                <th>{{api.translate('Actions')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy;">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of products | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>{{item.id}}</td>
+                                <td><a href="javascript:;"><img class="img-responsive" style="height: 40px;"
+                                            [src]="api.mediaURL+item.cover" onError="this.src='assets/images/user.png'"
+                                            alt="chat-user"></a>
+                                </td>
+                                <td> {{item.name}}</td>
+                                <td>{{util.currecny}} {{item.price}}</td>
+                                <td> {{item.rating}}</td>
+                                <td>
+                                    <button type="button" (click)="update(item,'status')"
+                                        [className]="getClass(item.status)">{{item.status === '1' ? 'Active'
+                                        :'Deactive'}}</button>
+                                </td>
+
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{api.translate('View')}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="has-text-centered">
+                    <pagination-controls id="pagin1" (pageChange)="page = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng2-toasty></ng2-toasty>

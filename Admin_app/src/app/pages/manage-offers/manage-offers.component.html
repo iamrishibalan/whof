@@ -1,0 +1,89 @@
+
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}}</p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{api.translate('Add New Coupon')}} </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Available on')}}</label>
+                        <ng-multiselect-dropdown [placeholder]="api.translate('Select Restaurants')" maxHeight="100"
+                            [data]="getList()" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
+                            (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Coupon code')}}</label>
+                        <input type="text" [(ngModel)]="name" class="form-control"
+                            [placeholder]="api.translate('Coupon code')">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Discount')}}</label>
+                        <input type="number" [(ngModel)]="off" class="form-control"
+                            [placeholder]="api.translate('Discount')">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Minimum cart value')}}</label>
+                        <input type="number" [(ngModel)]="min" class="form-control"
+                            [placeholder]="api.translate('Minimum cart value')">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Upto')}}</label>
+                        <input type="number" [(ngModel)]="upto" class="form-control"
+                            [placeholder]="api.translate('Upto')">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Discount Type')}}</label>
+                        <select name="select" [(ngModel)]="type" class="form-control">
+                            <option value="per">%</option>
+                            <option value="flat">{{api.translate('Flat')}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Expire date')}}</label>
+                        <input type="date" [(ngModel)]="date_time" class="form-control"
+                            [placeholder]="api.translate('Expire date')">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Descriptions')}}</label>
+                        <textarea rows="5" cols="5" [(ngModel)]="descriptions" class="form-control"
+                            [placeholder]="api.translate('Descriptions')"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round" (click)="create()">{{api.translate('Add
+                            coupon')}}</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

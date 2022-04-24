@@ -1,0 +1,96 @@
+<ion-header *ngIf="!util.appClosed">
+  <ion-toolbar color="primary">
+    <ion-title> {{util.translate('Analytics')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding" *ngIf="!util.appClosed">
+  <ion-item>
+    <ion-label> {{util.translate('From Date')}} </ion-label>
+    <ion-datetime display-format="DD-MM-YYYY" mode="md" [(ngModel)]="from"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label> {{util.translate('To Date')}} </ion-label>
+    <ion-datetime display-format="DD-MM-YYYY" mode="md" [(ngModel)]="to"></ion-datetime>
+  </ion-item>
+  <ion-row>
+    <ion-col size="6">
+      <ion-button (click)="getStats()" expand="block" fill="outline" size="small">
+        {{util.translate('Get Stats')}}
+      </ion-button>
+    </ion-col>
+    <ion-col size="6" *ngIf="from && to && storeOrder?.length">
+      <ion-button (click)="print()" expand="block" fill="clear" size="small">
+        {{util.translate('Print')}}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="from && to && storeOrder?.length && apiCalled" #invoiceTicket>
+    <h4 style="text-align: center;color: #ff384c;font-size: 14px;font-weight: bold;">S2ftech Full App </h4>
+    <p style="text-align: center;color: #ED7669;font-size: 12px;">{{getDate(from)}} to {{getDate(to)}}</p>
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;color: #ff384c;font-size: 12px;">BISMILLA
+      MULTICUISINE RESTAURANT
+      App</p>
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;font-size: 12px;"> 465, Kamaraj Salai,<br>near
+      Annamalai Hotel, Sakthi Nagar,<br>Saram, Puducherry, 605013
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;font-size: 12px;">info@groceryee.com</p>
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;font-size: 12px;">+91 9597456007</p>
+    <p style="text-align: left; font-weight: bold;color: #ff384c;font-size: 12px;">{{today()}}</p>
+    <ion-row>
+      <ion-col size="3"></ion-col>
+      <ion-col size="5">
+        <p
+          style="text-align: right;font-weight: bold;margin: 0px !important;color: #ff384c;font-size: 12px;font-weight: bold;;">
+          {{util.translate('Total')}}</p>
+        <p
+          style="text-align: right;font-weight: bold;margin: 0px !important;color: #ff384c;;font-size: 12px;font-weight: bold;">
+          {{util.translate('Commission')}}
+        </p>
+        <p
+          style="text-align: right;font-weight: bold;margin: 0px !important;color: #ff384c;font-size: 12px;font-weight: bold;;">
+          {{util.translate('Amount Received')}}
+        </p>
+      </ion-col>
+      <ion-col size="4">
+        <p style="color: black !important;margin: 0px !important;text-align: right;font-size: 12px;font-weight: bold;">
+          {{util.currecny}}
+          {{totalAmount}}
+        </p>
+        <p style="color: black !important; margin: 0px !important;text-align: right;font-size: 12px;font-weight: bold;">
+          {{util.currecny}}
+          {{commisionAmount}}
+        </p>
+        <p style="color: black !important;margin: 0px !important;text-align: right;font-size: 12px;font-weight: bold;">
+          {{util.currecny}}
+          {{toPay}}</p>
+      </ion-col>
+    </ion-row>
+    <table class="table" style="font-size: 10px;width: 100%;text-align: center;">
+      <thead>
+        <tr class="text-uppercase" style="color:#ff384c ;">
+          <th> {{util.translate('Id')}} </th>
+          <th style="width: 85px !important;"> {{util.translate('Ordered on')}} </th>
+          <th> {{util.translate('Bookings')}} </th>
+          <th> {{util.translate('Total')}} </th>
+          <th> {{util.translate('Commission')}} </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of storeOrder" style="background-color: #F5F8FA;">
+          <td>#{{item.id}}</td>
+          <td>{{item.time | date: 'dd-MM-yyyy'}}</td>
+          <td>
+            <div style="width: 120px !important; white-space: pre-wrap;">
+              <span *ngFor="let orders of item.orders;let i =index;">
+                {{orders.name}} <span *ngIf="item.orders.length -1 !== i">,</span>
+              </span>
+            </div>
+          </td>
+
+          <td style="font-size: 10px;font-weight: bold;"> {{util.currecny}} {{item.grand_total}}</td>
+          <td style="font-size: 10px;font-weight: bold;">{{util.currecny}}{{getCommisions(item.grand_total)}}</td>
+        </tr>
+      </tbody>
+      
+    </table>
+  </div>
+</ion-content>

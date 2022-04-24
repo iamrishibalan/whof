@@ -1,0 +1,185 @@
+
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+   <p style="font-size: 20px; color: #e74c3c">{{util.translate('Please wait...')}}</p>
+</ngx-spinner>
+
+<ng-template #contentVarient let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.translate('Add item to variations')}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label>{{util.translate('Add-ons name')}}</label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_title" type="text"
+               class="form-control" [placeholder]="util.translate('Add-ons name')">
+         </div>
+
+         <div class="col-sm-12">
+            <label>{{util.translate('Add-ons price')}}</label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_price" type="number"
+               class="form-control" [placeholder]="util.translate('Add-ons price')">
+         </div>
+      </div>
+
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outlinedark" (click)="close3()">{{util.translate('Save')}}</button>
+   </div>
+</ng-template>
+
+<ng-template #newAddone let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.translate('Add Add-ons!')}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label>{{util.translate('Add-ons name')}}</label>
+            <input style="background: transparent !important;" [(ngModel)]="addonName" type="text" class="form-control"
+               [placeholder]="util.translate('Add-ons name')">
+         </div>
+
+         <div class="col-sm-12">
+            <label>{{util.translate('Add-ons Type')}}</label>
+            <select name="select" [(ngModel)]="addonType" class="form-control">
+               <option value='radio'>{{util.translate('Single Select')}}</option>
+               <option value='check'>{{util.translate('Multiple Select')}}</option>
+            </select>
+         </div>
+      </div>
+
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="addNewAddon()">{{util.translate('Save')}}</button>
+   </div>
+</ng-template>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="card">
+         <div class="card-body">
+            <h5>{{util.translate('Product Details')}}</h5>
+         </div>
+         <div class="card-body reset-table p-t-0">
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.translate('Select Category')}}</label>
+                  <select name="select" [(ngModel)]="cid" class="form-control">
+                     <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
+                  </select>
+               </div>
+
+               <div class="col-sm-6">
+                  <label>{{util.translate('Name')}}</label>
+                  <input type="text" [(ngModel)]="name" class="form-control" [placeholder]="util.translate('Name')">
+               </div>
+               <div class="col-sm-6">
+                  <label>{{util.translate('Price')}}</label>
+                  <input type="text" [(ngModel)]="price" class="form-control" [placeholder]="util.translate('Price')">
+               </div>
+
+               <div class="col-sm-6">
+                  <label>{{util.translate('Status')}}</label>
+                  <select name="select" [(ngModel)]="status" class="form-control">
+                     <option value='1'>{{util.translate('Available')}}</option>
+                     <option value='0'>{{util.translate('Hide')}}</option>
+                  </select>
+               </div>
+
+               <div class="col-sm-6">
+                  <label>{{util.translate('Kind')}}</label>
+                  <select name="select" [(ngModel)]="veg" class="form-control">
+                     <option value='1'>{{util.translate('Veg')}}</option>
+                     <option value='0'>{{util.translate('Non Veg')}}</option>
+                  </select>
+               </div>
+            </div>
+
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.translate('Size?')}} <span
+                        style="font-size: 10px !important;">{{util.translate('(Regular,Medium,Large)')}}</span></label>
+                  <select name="select" (ngModelChange)="changeSize($event)" [(ngModel)]="size" class="form-control">
+                     <option value='1'>{{util.translate('Have Variations')}}</option>
+                     <option value='0'>{{util.translate('No Variations')}}</option>
+                  </select>
+               </div>
+
+               <div class="col-sm-6">
+                  <div *ngFor="let item of variations;let i = index;">
+                     <div
+                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;font-weight: bold;">
+                        <label style="margin: 0px !important;font-weight: bold; font-size: 18px;">{{item.title}}</label>
+                        <i class="ti-plus" style="font-weight: bold;margin: 0px 10px;" (click)="addItem(i)"></i>
+                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="delete(item)"></i>
+                     </div>
+                     <div *ngFor="let sub of item.items;let j = index"
+                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+                        <div
+                           style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                           {{sub.title}} -
+                           <p style="margin: 0px !important;">
+                              <span *ngIf="util.cside ==='left'">{{util.currecny}} {{sub.price}}</span>
+                              <span *ngIf="util.cside ==='right'"> {{sub.price}} {{util.currecny}}</span>
+                           </p>
+
+                        </div>
+
+                        <i class="ti-pencil-alt" style="font-weight: bold;margin: 0px 10px;"
+                           (click)="editSub(i,sub,j)"></i>
+                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="deleteSub(i,sub)"></i>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="col-sm-6">
+                  <label>{{util.translate('Add-ons')}} <span
+                        style="font-size: 10px !important;">{{util.translate('(Extras,cold drinks)')}}</span></label>
+                  <i class="ti-plus" (click)="addNew()"></i>
+               </div>
+            </div>
+
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{util.translate('Descriptions')}}</label>
+                  <textarea rows="5" cols="5" [(ngModel)]="descriptions" class="form-control"
+                     [placeholder]="util.translate('Descriptions')"></textarea>
+               </div>
+            </div>
+
+
+            <div class="form-group row">
+
+               <label class="col-sm-4 col-form-label">{{util.translate('Upload cover image here')}}</label>
+               <div class="col-sm-4">
+                  <input (change)="preview_banner($event.target.files)" type="file" class="form-control"
+                     accept="image/*">
+               </div>
+               <div class="col-sm-4">
+                  <img [src]="api.mediaURL+ coverImage" alt="" style="height: 100px;width: 100px;float: right;"
+                     onError="this.src='assets/icon.png'">
+               </div>
+
+            </div>
+
+
+            <div class="form-group row">
+               <button type="button" (click)="submit()"
+                  class="btn btn-primary btn-md btn-block waves-effect text-center">{{util.translate('Submit')}}
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<ng2-toasty></ng2-toasty>

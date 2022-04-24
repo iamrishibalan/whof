@@ -1,0 +1,54 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="isEdit">Edit Service</ion-title>
+    <ion-title *ngIf="!isEdit">Add New Service</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  class="ion-padding">
+  <div class="mainContent">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label>{{util.translate('Category')}}</ion-label>
+        <ion-select [(ngModel)]="cid" interface="popover" mode="ios">
+          <ion-select-option *ngFor="let item of categories" [value]="item.id">{{item.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="name" type="text" [placeholder]="util.translate('Service name')"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="price" type="number" [placeholder]="util.translate('Price')"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-textarea [(ngModel)]="descriptions" rows="5" [placeholder]="util.translate('Short descriptions')">
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{util.translate('Status')}}</ion-label>
+        <ion-select [(ngModel)]="status" interface="popover" mode="ios">
+          <ion-select-option value="1">{{util.translate('Available')}}</ion-select-option>
+          <ion-select-option value="0">{{util.translate('Hide')}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="coverPlaceholder" (click)="cover()" *ngIf="!coverImage || coverImage ==''">
+        <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+        <p>{{util.translate('Upload Saloon cover image here')}}</p>
+      </div>
+      <div class="coverReal" (click)="cover()"
+      [ngStyle]="{'background-image':'url('+api.mediaURL+coverImage+'),url(assets/placeholder.jpg)'}"
+      *ngIf="coverImage && coverImage !=''">
+    </div>
+      </ion-list>
+  </div>
+
+  <ion-button (click)="submit()" expand="block">
+    {{util.translate('Submit')}}
+  </ion-button>
+</ion-content>

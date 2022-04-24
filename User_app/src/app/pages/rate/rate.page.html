@@ -1,0 +1,101 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Rate')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="productss !='5'">
+  <div class="main_content_div" *ngIf="util.orderDetails && util.orderDetails.orders">
+
+
+    <ion-label class="titles"> {{util.translate('Orders')}} </ion-label>
+    <div class="desc_div">
+      <div class="border_bottom">
+        <div>
+          <p class="storeName">
+            <span class="name"> {{util.orderDetails.str_name}} </span>
+            <span class="status" (click)="rateStore()">
+              <div class="ion-activatable ripple-parent">
+                <ion-icon slot="start" color="warning" name="star-outline"></ion-icon>
+                <ion-ripple-effect type="bounded"></ion-ripple-effect>
+              </div>
+            </span>
+          </p>
+          <p *ngFor="let order of products" class="items">
+            <span>{{order.name}}
+            </span>
+            <span (click)="rateProduct(order)">
+              <div class="ion-activatable ripple-parent">
+                <ion-icon slot="start" color="warning" name="star-outline"></ion-icon>
+                <ion-ripple-effect type="bounded"></ion-ripple-effect>
+              </div>
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <ion-label class="titles" *ngIf="util.orderDetails && util.orderDetails.did"> {{util.translate('Rate Drivers')}}
+      </ion-label>
+
+      <div class="card_div">
+        <div class="resto_detail">
+          <div class="back_image"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+util.orderDetails.driverInfo.cover+'),url(assets/user.png)'}">
+          </div>
+          <div style="margin-left: 10px;" (click)="ratDriver()">
+            <ion-label class="res_name">{{util.orderDetails.driverInfo.first_name}}
+              {{util.orderDetails.driverInfo.last_name}}</ion-label>
+            <ion-label class="res_location">
+              <ion-icon name="mail-outline"></ion-icon> {{util.orderDetails.driverInfo.email}}
+            </ion-label>
+            <ion-label class="res_location">
+              <ion-icon name="call-outline"></ion-icon> {{util.orderDetails.driverInfo.mobile}}
+            </ion-label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+<ion-content *ngIf="productss =='5'">
+  <div class="main_content_div" *ngIf="util.orderDetails && util.orderDetails.orders">
+
+
+    <ion-label class="titles"> {{util.translate('Booking')}} </ion-label>
+    <div class="desc_div">
+      <div class="border_bottom">
+        <div>
+          <p class="storeName">
+            <span class="name"> {{util.orderDetails.str_name}} </span>
+            <span class="status" (click)="rateStore()">
+              <div class="ion-activatable ripple-parent">
+                <ion-icon slot="start" color="warning" name="star-outline"></ion-icon>
+                <ion-ripple-effect type="bounded"></ion-ripple-effect>
+              </div>
+            </span>
+          </p>
+          <p *ngFor="let order of products" class="items">
+            <span>{{order.name}}
+            </span>
+            <span (click)="rateProduct(order)">
+              <div class="ion-activatable ripple-parent">
+                <ion-icon slot="start" color="warning" name="star-outline"></ion-icon>
+                <ion-ripple-effect type="bounded"></ion-ripple-effect>
+              </div>
+            </span>
+          </p>
+        </div>
+      </div>
+
+  
+    </div>
+
+  </div>
+</ion-content>

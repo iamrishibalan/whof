@@ -1,0 +1,129 @@
+
+<ion-content class="ion-padding">
+  <div class="login-logo">
+    <img src="assets/icon.png" class="logo_icon" alt="S2ftech">
+    <p class="login-name">{{util.translate('Register')}}</p>
+    <p class="subTitle">{{util.translate('Enter your login detail to')}} <br>
+      {{util.translate('access your account')}}</p>
+  </div>
+
+  <form #loginForm="ngForm" novalidate>
+    <ion-list lines="none">
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="login.email" type="email" [placeholder]="util.translate('Email')" name="email"
+          #email="ngModel" spellcheck="false" autocapitalize="off" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="email.valid || submitted == false" class="ion-padding-start">
+          {{util.translate('Email is required')}}
+        </p>
+      </ion-text>
+
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="login.password" name="password" [placeholder]="util.translate('Password')"
+          type="password" #password="ngModel" required>
+        </ion-input>
+      </ion-item>
+
+      <ion-text color="danger">
+        <p [hidden]="password.valid || submitted == false" class="ion-padding-start">
+          {{util.translate('Password is required')}}
+        </p>
+      </ion-text>
+
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="login.first_name" type="text" [placeholder]="util.translate('First Name')"
+          name="full_name" #full_name="ngModel" spellcheck="false" autocapitalize="off" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="full_name.valid || submitted == false" class="ion-padding-start">
+          {{util.translate('First Name is required')}}
+        </p>
+      </ion-text>
+
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="login.last_name" type="text" [placeholder]="util.translate('Last Name')" name="lname"
+          #lname="ngModel" spellcheck="false" autocapitalize="off" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="lname.valid || submitted == false" class="ion-padding-start">
+          {{util.translate('Last Name is required')}}
+        </p>
+      </ion-text>
+
+      <!-- Country -->
+
+      <ion-row>
+        <ion-col size="3" (click)="openCountry()">
+          <ion-item lines="none">
+            <ion-input style="font-size: 12px;" [(ngModel)]="login.cc" disabled="true" type="text" name="ccode"
+              #ccode="ngModel" spellcheck="false" autocapitalize="off" required>
+            </ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="9">
+          <ion-item lines="none">
+            <ion-input [(ngModel)]="login.mobile" type="number" [placeholder]="util.translate('Mobile Number')"
+              name="mobile" #phone="ngModel" spellcheck="false" autocapitalize="off" required>
+            </ion-input>
+          </ion-item>
+          <ion-text color="danger">
+            <p [hidden]="phone.valid || submitted == false" class="ion-padding-start">
+              {{util.translate('Phone number is required')}}
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <!-- Country -->
+
+      <ion-item lines="none">
+        <ion-label> {{util.translate('Gender')}} </ion-label>
+        <ion-select okText="Okay" cancelText="Dismiss" interface="popover" [(ngModel)]="login.gender" name="gender"
+          #gender="ngModel" required>
+          <ion-select-option value="1"> {{util.translate('Male')}} </ion-select-option>
+          <ion-select-option value="0"> {{util.translate('Female')}} </ion-select-option>
+          <ion-select-option value="2"> {{util.translate('Others')}} </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+    </ion-list>
+
+    <div class="div_chk">
+      <ion-checkbox [checked]="login.check" [(ngModel)]="login.check" name="checkls" #checkls="ngModel" color="light"
+        class="chk"></ion-checkbox>
+      <ion-label class="lbl_police"><span class="span_term">
+          {{util.translate('By clicking on the I agree button click, download or if you use the Application, you agree
+          to be bound by the')}}
+        </span>
+        <u> <a style="color:var(--ion-color-primary);" (click)="open('eula')"> {{util.translate('EULA certificate')}}
+          </a> </u>
+        {{util.translate('and')}}
+        <u> <a style="color: var(--ion-color-primary);" (click)="open('privacy')"> {{util.translate('Privacy Policy')}}
+          </a> </u>
+        {{util.translate('of this app')}}.
+      </ion-label>
+    </div>
+    <ion-text color="danger">
+      <p [hidden]="checkls.valid || submitted == false" class="ion-padding-start">
+        {{util.translate('Please Accept Privacy Policy')}}
+      </p>
+    </ion-text>
+
+    <ion-row class="ion-no-margin ion-no-padding">
+      <ion-col class="ion-no-margin ion-no-padding">
+        <ion-button class="btn_class" (click)="onLogin(loginForm)" type="submit" expand="block" [disabled]="isLogin">
+          <span *ngIf="!isLogin"> {{util.translate('Sign up')}}</span>
+          <ion-spinner name="circles" *ngIf="isLogin"></ion-spinner>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+  <p class="createAcc" (click)="back()">{{util.translate('Already have an account')}}
+    <span class="registerTag">{{util.translate('Login')}}</span>
+  </p>
+</ion-content>

@@ -1,0 +1,756 @@
+
+<div mdbModal #variantModal="mdbModal" class="modal fade bottom" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 99999;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">{{util.translate('customize')}}: “{{productName}}”</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="variantModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body location_body">
+        <!-- Same Product -->
+        <div *ngIf="sameProduct">
+          <div class="row" *ngFor="let item of sameCart;let i = index" style="margin-bottom: 10px;">
+            <div class="col-3">
+              <p class="name">{{productName}}</p>
+            </div>
+            <div class="col-5">
+              <p *ngFor="let sub of item.item" class="subDetails"> {{sub.name}} </p>
+            </div>
+            <div class="col-4">
+              <div class="cart_btn">
+                <label class="btns" mdbWavesEffect (click)="removeQSame(i)">-</label>
+                <label class="totls">{{item.total}} </label>
+                <label class="btns" mdbWavesEffect (click)="addQSame(i)">+</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Or diff variations -->
+        <div *ngIf="!sameProduct" class="padder">
+          <div *ngFor="let item of lists">
+            <div *ngIf="item.type == 'radio'">
+              <p class="title"> {{item.title}} </p>
+              <!-- Default unchecked -->
+              <div class="custom-control custom-radio" *ngFor="let sub of item.items;let i = index;">
+                <input type="radio" class="custom-control-input" (input)="radioGroupChange($event,item.title)" [id]="i"
+                  [value]="i" name="size" mdbInput>
+                <label class="custom-control-label" [for]="i">
+                  <span style="text-align: left">{{sub.title}} </span>
+                  <span style="text-align: right" *ngIf="util.cside ==='left'"> {{util.currecny}} {{sub.price}} </span>
+                  <span style="text-align: right" *ngIf="util.cside ==='right'"> {{sub.price}}{{util.currecny}} </span>
+                </label>
+              </div>
+            </div>
+
+            <div *ngIf="item.type =='check'">
+              <div class="form-group">
+                <p class="title"> {{item.title}} </p>
+                <div *ngFor="let sub of item.items;let j = index;" style="margin: 0px;">
+                  <label class="chbox">
+                    <input type="checkbox" (input)="checkedEvent($event,sub.title)" [value]="sub.price" />
+                    <span style="margin-left: 10px;" *ngIf="util.cside ==='left'"> {{sub.title}} {{util.currecny}}
+                      {{sub.price}}</span>
+                    <span style="margin-left: 10px;" *ngIf="util.cside ==='right'"> {{sub.title}} {{sub.price}}
+                      {{util.currecny}}</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button mdbBtn style="width: 100%;" (click)="addToCart()" color="danger" class="waves-light" mdbWavesEffect
+          *ngIf="!sameProduct">{{util.translate('Add Item')}}
+        </button>
+        <div class="row" *ngIf="sameProduct" style="width: 100%;margin: 0px;">
+          <div class="col-6">
+            <button mdbBtn style="width: 100%;" (click)="sameChoise()" color="danger" class="waves-light"
+              mdbWavesEffect>{{util.translate('Add')}}
+            </button>
+          </div>
+          <div class="col-6">
+            <button mdbBtn style="width: 100%;" (click)="sameProduct = !sameProduct;newItem = true" color="danger"
+              class="waves-light" mdbWavesEffect>{{util.translate('Add new')}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mdbModal #loginModal="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 99999;">
+  <div class="modal-dialog" role="document">
+    <!-- Login with email and password -->
+    <form #loginForm="ngForm" novalidate *ngIf="util.user_login ==='0'">
+
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">{{util.translate('Login')}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="loginModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body location_body">
+          <div class="form_div">
+            <input type="email" [placeholder]="util.translate('Email')" [(ngModel)]="login.email"
+              [ngModelOptions]="{standalone: true}" class="form-control frm" name="email" #email="ngModel"
+              spellcheck="false" autocapitalize="off" required>
+            <p [hidden]="email.valid || submitted == false" class="redAlert">
+              {{util.translate('Email is required')}}
+            </p>
+            <input type="password" [(ngModel)]="login.password" [ngModelOptions]="{standalone: true}" name="password"
+              [placeholder]="util.translate('Password')" type="password" #password="ngModel" required
+              class="form-control frm">
+            <p [hidden]="password.valid || submitted == false" class="redAlert">
+              {{util.translate('Password is required')}}
+            </p>
+          </div>
+          <p class="frg" (click)="loginModal.hide();forgotPwd.show();">{{util.translate('Forgot Password?')}}</p>
+          <p class="creatAc" (click)="loginModal.hide();registerModal.show();">{{util.translate('or')}} <span
+              class="colored">
+              {{util.translate('create an account')}}</span> </p>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button mdbBtn color="default" class="waves-light" (click)="loginWithEmailPassword(loginForm,loginModal)"
+            mdbWavesEffect>{{util.translate('Login')}}</button>
+        </div>
+      </div>
+    </form>
+    <!-- end of Login with email and password -->
+
+    <!-- Login with mobile and password -->
+    <form #loginForm="ngForm" novalidate *ngIf="util.user_login ==='1'">
+
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">{{util.translate('Login')}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="loginModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body location_body">
+          <div class="form_div">
+            <div class="row">
+              <div class="col-3" style="display: flex; flex-direction: row;  align-items: center;">
+                <select [(ngModel)]="mobile.ccCode" type="text" name="ccode" #ccode="ngModel" spellcheck="false"
+                  autocapitalize="off" required style="border: 1px solid lightgray;width: 100%;">
+                  <option *ngFor="let item of util.countrys" [value]="item.dialling_code">
+                    {{item.country_name}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-9">
+                <input [(ngModel)]="mobile.phone" type="number" [placeholder]="util.translate('Mobile Number')"
+                  name="mobile" #phone="ngModel" spellcheck="false" autocapitalize="off" required
+                  class="form-control frm">
+                <p [hidden]="phone.valid || submitted == false" class="redAlert">
+                  {{util.translate('Phone number is required')}}
+                </p>
+              </div>
+            </div>
+            <input name="password" [placeholder]="util.translate('Password')" type="password" #password="ngModel"
+              required [(ngModel)]="mobile.password" class="form-control frm" [ngModelOptions]="{standalone: true}">
+            <p [hidden]="password.valid || submitted == false" class="redAlert">
+              {{util.translate('Password is required')}}
+            </p>
+          </div>
+          <p class="frg" (click)="loginModal.hide();forgotPwd.show();">{{util.translate('Forgot Password?')}}</p>
+          <p class="creatAc" (click)="loginModal.hide();registerModal.show();">or <span class="colored">
+              {{util.translate('create an account')}}</span> </p>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button mdbBtn color="default" class="waves-light" (click)="loginWithMobileAndPassword(loginForm,loginModal)"
+            mdbWavesEffect>{{util.translate('Login')}}</button>
+        </div>
+      </div>
+    </form>
+    <!--End Of Login with mobile and password -->
+    <form #loginForm="ngForm" novalidate *ngIf="util.user_login ==='2'">
+
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">{{util.translate('Login')}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="loginModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body location_body">
+          <div class="form_div">
+            <div class="row">
+              <div class="col-3" style="display: flex; flex-direction: row;  align-items: center;">
+                <select [(ngModel)]="mobileLogin.ccCode" type="text" name="ccode" #ccode="ngModel" spellcheck="false"
+                  autocapitalize="off" required style="border: 1px solid lightgray;width: 100%;">
+                  <option *ngFor="let item of util.countrys" [value]="item.dialling_code">
+                    {{item.country_name}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-9">
+                <input [(ngModel)]="mobileLogin.phone" type="number" [placeholder]="util.translate('Mobile Number')"
+                  name="mobile" #phone="ngModel" spellcheck="false" autocapitalize="off" required
+                  class="form-control frm">
+                <p [hidden]="phone.valid || submitted == false" class="redAlert">
+                  {{util.translate('Phone number is required')}}
+                </p>
+              </div>
+            </div>
+
+          </div>
+          <p class="frg" (click)="loginModal.hide();forgotPwd.show();">{{util.translate('Forgot Password?')}}</p>
+          <p class="creatAc" (click)="loginModal.hide();registerModal.show();">{{util.translate('or')}} <span
+              class="colored">
+              {{util.translate('create an account')}}</span> </p>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button mdbBtn color="default" class="waves-light" (click)="loginWithMobileAndOTP(loginForm,loginModal)"
+            mdbWavesEffect>{{util.translate('Login')}}</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<div mdbModal #registerModal="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 99999;">
+  <div class="modal-dialog" role="document">
+    <form #loginForm="ngForm" novalidate>
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">{{util.translate('Signup')}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="registerModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body location_body">
+          <div>
+            <div class="form_div">
+              <input type="email" [placeholder]="util.translate('Email')" name="email" #email="ngModel"
+                spellcheck="false" autocapitalize="off" required [(ngModel)]="registerForm.email"
+                class="form-control frm" [ngModelOptions]="{standalone: true}">
+              <p [hidden]="email.valid || submitted == false" class="redAlert">
+                {{util.translate('Email is required')}}
+              </p>
+              <input name="password" [placeholder]="util.translate('Password')" type="password" #password="ngModel"
+                required [(ngModel)]="registerForm.password" class="form-control frm"
+                [ngModelOptions]="{standalone: true}">
+              <p [hidden]="password.valid || submitted == false" class="redAlert">
+                {{util.translate('Password is required')}}
+              </p>
+              <input [(ngModel)]="registerForm.first_name" type="text" [placeholder]="util.translate('First Name')"
+                name="full_name" #full_name="ngModel" spellcheck="false" autocapitalize="off" required
+                [ngModelOptions]="{standalone: true}" class="form-control frm">
+              <p [hidden]="full_name.valid || submitted == false" class="redAlert">
+                {{util.translate('First Name is required')}}
+              </p>
+              <input type="text" [placeholder]="util.translate('Last Name')" [(ngModel)]="registerForm.last_name"
+                name="lname" #lname="ngModel" spellcheck="false" autocapitalize="off" required
+                [ngModelOptions]="{standalone: true}" class="form-control frm">
+              <p [hidden]="lname.valid || submitted == false" class="redAlert">
+                {{util.translate('Last Name is required')}}
+              </p>
+              <div class="row">
+                <div class="col-3" style="display: flex; flex-direction: row;  align-items: center;">
+                  <select [(ngModel)]="registerForm.cc" type="text" name="ccode" #ccode="ngModel" spellcheck="false"
+                    autocapitalize="off" required style="border: 1px solid lightgray;width: 100%;">
+                    <option *ngFor="let item of util.countrys" [value]="item.dialling_code">
+                      {{item.country_name}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-9">
+                  <input [(ngModel)]="registerForm.mobile" type="number" [placeholder]="util.translate('Mobile Number')"
+                    name="mobile" #phone="ngModel" spellcheck="false" autocapitalize="off" required
+                    class="form-control frm">
+                  <p [hidden]="phone.valid || submitted == false" class="redAlert">
+                    {{util.translate('Phone number is required')}}
+                  </p>
+                </div>
+              </div>
+              <select [(ngModel)]="registerForm.gender" required style="border: 1px solid lightgray;width: 100%;"
+                [ngModelOptions]="{standalone: true}">
+                <option value="1"> {{util.translate('Male')}}</option>
+                <option value="0"> {{util.translate('Female')}} </option>
+                <option value="2"> {{util.translate('Others')}} </option>
+              </select>
+              <div style="margin: 0px 20px; font-size: 10px;">
+
+                <mdb-checkbox [checked]="registerForm.check" [(ngModel)]="registerForm.check" name="checkls"
+                  #checkls="ngModel" color="light">
+                  <p style="margin: 0px !important;margin-top: 10px !important; "><span class="span_term">
+                      {{util.translate('By clicking on the I agree button click, download or if you use the Application,
+                      you agree to be bound by the')}}
+                    </span>
+                    <u> <a style="color:blue" (click)="openLink('eula')">
+                        {{util.translate('EULA certificate')}}
+                      </a> </u>
+                    {{util.translate('and')}}
+                    <u> <a style="color: blue" (click)="openLink('privacy')">
+                        {{util.translate('Privacy Policy')}}
+                      </a> </u>
+                    {{util.translate('of this app')}}.
+                  </p>
+                </mdb-checkbox>
+              </div>
+            </div>
+            <p class="creatAc" (click)="registerModal.hide();loginModal.show();">or <span class="colored">
+                {{util.translate('login to your account')}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button mdbBtn color="default" class="waves-light" (click)="onRegister(loginForm,registerModal,verifyModal)"
+            mdbWavesEffect>{{util.translate('Signup')}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div mdbModal #forgotPwd="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 99999;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">{{util.translate('Reset Password')}} </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="forgotPwd.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body location_body">
+        <div *ngIf="util.reset_pwd ==='0'">
+          <div class="form_div" *ngIf="div_type === 1">
+            <input type="email" [(ngModel)]="reset_email" [placeholder]="util.translate('Email')"
+              class="form-control frm">
+          </div>
+
+          <div class="form_div" *ngIf="div_type === 2">
+            <input type="email" [(ngModel)]="reset_otp" [placeholder]="util.translate('OTP')" class="form-control frm">
+          </div>
+          <div class="form_div" *ngIf="div_type === 3">
+            <input type="password" [(ngModel)]="reset_password" [placeholder]="util.translate('New Password')"
+              class="form-control frm">
+            <input type="password" [(ngModel)]="reset_repass" [placeholder]="util.translate('Confirm Password')"
+              class="form-control frm">
+          </div>
+          <p class="creatAc" (click)="forgotPwd.hide();loginModal.show();">{{util.translate('or')}} <span
+              class="colored">
+              {{util.translate('login to your account')}}</span>
+          </p>
+        </div>
+
+        <div *ngIf="util.reset_pwd ==='1'">
+          <div class="form_div" *ngIf="div_type === 1">
+            <!-- <input type="email" [(ngModel)]="reset_email" placeholder="Email" class="form-control frm"> -->
+            <div class="row">
+              <div class="col-3" style="display: flex; flex-direction: row; align-items: center;">
+                <select [(ngModel)]="reset_cc" type="text" style="border: 1px solid lightgray;width: 100%;">
+                  <option *ngFor="let item of util.countrys" [value]="item.dialling_code">
+                    {{item.country_name}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-9">
+                <input [(ngModel)]="reset_phone" type="number" [placeholder]="util.translate('Mobile Number')"
+                  class="form-control frm">
+              </div>
+            </div>
+          </div>
+
+          <div class="form_div" *ngIf="div_type === 2">
+            <input type="email" [(ngModel)]="reset_otp" [placeholder]="util.translate('OTP')" class="form-control frm">
+          </div>
+          <div class="form_div" *ngIf="div_type === 3">
+            <input type="password" [(ngModel)]="reset_password" [placeholder]="util.translate('New Password')"
+              class="form-control frm">
+            <input type="password" [(ngModel)]="reset_repass" [placeholder]="util.translate('Confirm Password')"
+              class="form-control frm">
+          </div>
+          <p class="creatAc" (click)="forgotPwd.hide();loginModal.show();"> {{util.translate('Add')}}or <span
+              class="colored">
+              {{util.translate('login to your account')}}</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center" *ngIf="util.reset_pwd ==='0'">
+        <button mdbBtn color="default" class="waves-light" (click)="sendResetLink()" mdbWavesEffect [disabled]="isLogin"
+          *ngIf="div_type === 1">
+          <span *ngIf="!isLogin"> {{util.translate('Send OTP')}} </span>
+          <div class="spinner-border" *ngIf="isLogin" role="status"></div>
+        </button>
+
+        <button mdbBtn color="default" class="waves-light" (click)="verifyOTPOfReset()" mdbWavesEffect
+          [disabled]="isLogin" *ngIf="div_type === 2">
+          <span *ngIf="!isLogin"> {{util.translate('Verify OTP')}} </span>
+          <div class="spinner-border" *ngIf="isLogin" role="status"></div>
+        </button>
+
+        <button mdbBtn color="default" class="waves-light" (click)="sendEmailResetPasswordMail()" mdbWavesEffect
+          [disabled]="isLogin" *ngIf="div_type === 3">
+          <span *ngIf="!isLogin"> {{util.translate('Reset Password')}}</span>
+          <div class="spinner-border" *ngIf="isLogin" role="status"></div>
+        </button>
+
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center" *ngIf="util.reset_pwd ==='1'">
+        <button mdbBtn color="default" class="waves-light" (click)="sendOTPOnMobile()" mdbWavesEffect
+          [disabled]="isLogin" *ngIf="div_type === 1">
+          <span *ngIf="!isLogin"> {{util.translate('Send OTP')}} </span>
+          <div class="spinner-border" *ngIf="isLogin" role="status"></div>
+        </button>
+
+        <button mdbBtn color="default" class="waves-light" (click)="verifyResetCode()" mdbWavesEffect
+          [disabled]="isLogin" *ngIf="div_type === 2">
+          <span *ngIf="!isLogin"> {{util.translate('Verify OTP')}} </span>
+          <div class="spinner-border" *ngIf="isLogin" role="status"></div>
+        </button>
+
+        <button mdbBtn color="default" class="waves-light" (click)="resetPasswordWithPhone()" mdbWavesEffect
+          [disabled]="isLogin" *ngIf="div_type === 3">
+          <span *ngIf="!isLogin"> {{util.translate('Reset Password')}}</span>
+          <div class="spinner-border" *ngIf="isLogin" role="status"></div>
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div mdbModal #verifyModal="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 99999;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">{{util.translate('Verify Mobile')}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="verifyModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body location_body">
+        <div>
+          <p class="subTitleText">{{util.translate('We texted you a code to verify')}}
+            <br> {{util.translate('your phone')}} +{{this.registerForm.cc}} {{this.registerForm.mobile}}
+          </p>
+          <div class="otpInput">
+            <ng-otp-input (onInputChange)="onOtpChange($event)"
+              [config]="{length:6,inputStyles:{'width': '30px !important','height': '30px !important'}}">
+            </ng-otp-input>
+          </div>
+          <p style="text-align: center;cursor: pointer;" (click)="resend()" *ngIf="resendCode"><span
+              style="color: #ff384c;">{{util.translate('Resend code')}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button mdbBtn color="default" class="waves-light" mdbWavesEffect
+          (click)="verify()">{{util.translate('Add')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mdbModal #otpModal="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 99999;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">{{util.translate('Verify Mobile')}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="verifyModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body location_body">
+        <div>
+          <p class="subTitleText">{{util.translate('We texted you a code to verify')}}
+            <br> {{util.translate('your phone')}} +{{this.mobileLogin.ccCode}} {{this.mobileLogin.phone}}
+          </p>
+          <div class="otpInput">
+            <ng-otp-input (onInputChange)="onOtpChange($event)"
+              [config]="{length:6,inputStyles:{'width': '30px !important','height': '30px !important'}}">
+            </ng-otp-input>
+          </div>
+          <p style="text-align: center;cursor: pointer;" (click)="resend2()" *ngIf="resendCode"><span
+              style="color: #ff384c;">{{util.translate('Resend code')}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button mdbBtn color="default" class="waves-light" mdbWavesEffect
+          (click)="otpLogin()">{{util.translate('Continue')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div [ngStyle]="{'background-image':'url('+api.mediaURL+cover+'),url(assets/placeholder.jpg)'}" class="back_img">
+    <div class="overlay"></div>
+    <div class="abs_div">
+      <label class="pro_name"> {{name}} </label>
+      <label class="pro_detail" style="font-size: 12px;"> <span *ngFor="let item of cusine;let i = index"> {{item}} •
+        </span></label>
+    </div>
+  </div>
+  <div class="flex_menu">
+    <label [ngClass]="tab === 1 ? 'activeTab' : 'deactiveTab'" (click)="tab = 1">{{util.translate('Order')}}</label>
+    <label [ngClass]="tab === 2 ? 'activeTab' : 'deactiveTab'" (click)="tab = 2">{{util.translate('Reviews')}}</label>
+    <label [ngClass]="tab === 3 ? 'activeTab' : 'deactiveTab'" (click)="tab = 3">{{util.translate('Photos')}}</label>
+    <label [ngClass]="tab === 4 ? 'activeTab' : 'deactiveTab'" (click)="tab = 4">{{util.translate('Overview')}}</label>
+  </div>
+</div>
+
+<div class="container rest_container" *ngIf="tab ===1">
+
+  <div class="row">
+    <div [ngClass]="util.deviceType ==='mobile' ? 'col-12' :'col-3'">
+      <div class="cart_div" *ngIf="util.deviceType !=='mobile'">
+        <label *ngFor="let item of dumyCates">
+          <ngx-skeleton-loader appearance="line" [theme]="{  height: '20px',width:'70px'}"> </ngx-skeleton-loader>
+        </label>
+        <label *ngFor="let item of categories" [ngClass]="caetId === item.id ? 'activeTab' : 'deactiveTab'"
+          (click)="caetId = item.id;getFoodByCid()"> {{item.name}} </label>
+      </div>
+      <div class="" *ngIf="util.deviceType ==='mobile'">
+        <div class="scrollbale">
+          <label *ngFor="let item of dumyCates">
+            <ngx-skeleton-loader appearance="line" [theme]="{  height: '20px',width:'70px'}"> </ngx-skeleton-loader>
+          </label>
+          <label *ngFor="let item of categories" [ngClass]="caetId === item.id ? 'activeTab' : 'deactiveTab'"
+            (click)="caetId = item.id;getFoodByCid()"> {{item.name}} </label>
+        </div>
+      </div>
+    </div>
+    <!-- class="col-lg-6 col-sm-12 col-md-12 col-xs-12" -->
+    <div [ngClass]="util.deviceType ==='mobile' ? 'col-12' :'col-6'">
+      <div class="row">
+
+        <div class="col-lg-12">
+          <div class="row product_div">
+            <div class="pro_col col-lg-12 col-sm-12 col-md-12 col-xs-12" *ngFor="let item of dummy;let i = index">
+              <div class="pro_div">
+                <div class="rest_img bg_image">
+                  <ngx-skeleton-loader appearance="line" [theme]="{  height: '120px',width:'120px'}">
+                  </ngx-skeleton-loader>
+                </div>
+                <div class="content_div">
+                  <label class="pro_name">
+                    <ngx-skeleton-loader appearance="line" [theme]="{  height: '20px',width:'220px'}">
+                    </ngx-skeleton-loader>
+                  </label>
+                  <label class="pro_name">
+                    <ngx-skeleton-loader appearance="line" [theme]="{  height: '20px',width:'220px'}">
+                    </ngx-skeleton-loader>
+                  </label>
+                  <label class="detail_lbl">
+                    <ngx-skeleton-loader appearance="line" [theme]="{  height: '20px',width:'170px'}">
+                    </ngx-skeleton-loader>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="pro_col col-lg-12 col-sm-12 col-md-12 col-xs-12" *ngFor="let item of foods;let i = index">
+              <div class="pro_div">
+                <div class="rest_img bg_image"
+                  [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}"></div>
+                <div class="content_div">
+                  <label class="pro_name">{{ (item.name.length>60)? (item.name | slice:0:60)+'..':(item.name) }}
+                  </label>
+                  <label class="detail_lbl">
+                    {{ (item.details.length>60)? (item.details | slice:0:60)+'..':(item.details) }}
+                  </label>
+                  <div class="rate_div">
+                    <mdb-icon fas icon="star"></mdb-icon>
+                    <mdb-icon fas icon="star"></mdb-icon>
+                    <mdb-icon fas icon="star"></mdb-icon>
+                    <mdb-icon fas icon="star"></mdb-icon>
+                    <mdb-icon fas icon="star"></mdb-icon>
+                  </div>
+
+                  <div class="flex_div">
+                    <label class="price" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.price}}</label>
+                    <label class="price" *ngIf="util.cside ==='right'"> {{item.price}} {{util.currecny}}</label>
+                    <div style="text-align: right;" *ngIf="!cart.itemId.includes(item.id)">
+                      <button mdbBtn class="place_btn" mdbWavesEffect
+                        (click)="add(i)">{{util.translate('Add')}}</button>
+                      <label *ngIf="item && item.variations && item.variations?.length"
+                        style="font-size: 10px; text-align: center; margin-top: 5px;">{{util.translate('customizable')}}</label>
+                    </div>
+                    <div class="cart_btn" *ngIf="cart.itemId.includes(item.id)">
+                      <label class="btns" mdbWavesEffect (click)="removeQ(i)">-</label>
+                      <label class="totls">{{item.quantiy}} </label>
+                      <label class="btns" mdbWavesEffect (click)="addQ(i)">+</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="no_data" *ngIf="haveData === false">
+        <div class="empty" [ngStyle]="{'background-image':'url(assets/nodata.jpg)'}"></div>
+        <p>{{util.translate('Opps.. no food found')}} </p>
+      </div>
+    </div>
+    <div [ngClass]="util.deviceType ==='mobile' ? 'col-12' :'col-3'">
+      <div class="cart_box">
+        <label class="title">{{util.translate('Cart')}} </label>
+        <div class="noData" *ngIf="!cart.cart?.length">
+          <img src="assets/food-cart.png" alt="" class="noDataImg">
+          <label>{{util.translate('Your Cart is Empty')}}</label>
+          <label>{{util.translate('Please add your favourite food')}} </label>
+        </div>
+
+        <div class="cart_items" *ngIf="cart.cart?.length">
+          <div *ngFor="let item of cart.cart;let i = index">
+            <div class="row" *ngIf="item.quantiy > 0 && !item.selectedItem?.length">
+              <div class="col-2 cover_img"
+                [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}"></div>
+              <div class="col-6">
+                <label class="heading_lbl">
+                  {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+                </label>
+                <div class="Rating">
+                  ({{item.rating}} {{util.translate('Ratings')}})
+                </div>
+                <label class="small_lbl">
+                  {{ (item.details.length>30)? (item.details | slice:0:30)+'..':(item.details) }}
+                </label>
+                <label class="heading_lbl" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.price}}</label>
+                <label class="heading_lbl" *ngIf="util.cside ==='right'"> {{item.price}} {{util.currecny}} </label>
+              </div>
+              <div class="col-4 ">
+                <div class="cart_btn">
+                  <label class="btns" mdbWavesEffect (click)="removeCartQ(i)">-</label>
+                  <label class="totls">{{item.quantiy}} </label>
+                  <label class="btns" mdbWavesEffect (click)="addCartQ(i)">+</label>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="item.quantiy > 0 && item.selectedItem?.length">
+              <div class="row" *ngFor="let subItems of item.selectedItem;let j = index">
+                <div class="col-2 cover_img"
+                  [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}"></div>
+                <div class="col-6">
+                  <label class="heading_lbl">{{item.name}}</label>
+                  <p *ngFor="let addods of subItems.item" style="margin: 0px;font-size: 10px;color: black;">
+                    - {{addods.name}}
+                    <span style="color: black;" *ngIf="util.cside ==='left'"> {{util.currecny}} {{addods.value}}</span>
+                    <span style="color: black;" *ngIf="util.cside ==='right'"> {{addods.value}} {{util.currecny}}</span>
+                  </p>
+                </div>
+                <div class="col-4">
+                  <div class="cart_btn">
+                    <label class="btns" mdbWavesEffect (click)="removeAddonCartQ(i,j)">-</label>
+                    <label class="totls">{{item.selectedItem[j].total}} </label>
+                    <label class="btns" mdbWavesEffect (click)="addAddonCartQ(i,j)">+</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="cart.cart?.length">
+          <div class="cart_checkout">
+            <label class="subTotal" *ngIf="util.cside ==='left'">{{util.translate('Subtotal')}}: {{util.currecny}}
+              {{cart.totalPrice}}</label>
+            <label class="subTotal" *ngIf="util.cside ==='right'">{{util.translate('Subtotal')}}:
+              {{cart.totalPrice}} {{util.currecny}}</label>
+            <button mdbBtn class="place_btn" (click)="openCart()">{{util.translate('Checkout')}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="tab ===2" class="container">
+  <h2 class="decorated"><span>{{util.translate('Reviews')}}</span></h2>
+  <div class="reviews">
+    <div class="row" style="margin: 10px 0px;">
+      <div class="col-6" *ngFor="let item of reviews">
+        <div class="row" style="padding: 10px;box-shadow: 0px 0px 4px 0px #dee2e6;">
+          <div class="col-2">
+            <img [src]="api.mediaURL+item.cover" class="avtar" />
+          </div>
+          <div class="col-10">
+            <span>
+              <p class="from">{{util.translate('Received From')}} {{item.way}} </p>
+              <h3 class="usrname"> {{item.fname}} {{item.lname}} </h3>
+              <p class="from"> {{item.msg}} </p>
+              <p class="from"> {{getDate(item.timestamp)}} </p>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="no_data" *ngIf="haveReview === false">
+    <div class="empty" [ngStyle]="{'background-image':'url(assets/nodata.jpg)'}"></div>
+    <p>{{util.translate('Opps.. no reviews found')}} </p>
+  </div>
+</div>
+
+<div *ngIf="tab ===3" class="container">
+  <h2 class="decorated"><span>{{util.translate('Photos')}}</span></h2>
+  <div class="photos">
+    <div class="row">
+      <div class="col-4" *ngFor="let item of images">
+        <div class="slide_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item+')'}">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="no_data" *ngIf="havePhotos === false">
+    <div class="empty" [ngStyle]="{'background-image':'url(assets/nodata.jpg)'}"></div>
+    <p>{{util.translate('Opps.. no photos found')}} </p>
+  </div>
+</div>
+
+<div *ngIf="tab ===4" class="container">
+  <h2 class="decorated"><span>{{util.translate('Overview')}}</span></h2>
+  <div class="content_div">
+    <label class="addr_lbl">
+      <mdb-icon fas icon="location-arrow"></mdb-icon>
+      {{address}}
+    </label>
+    <label class="addr_lbl">
+      <mdb-icon fas icon="clock"></mdb-icon>
+      {{open}} : {{close}}
+    </label>
+    <label class="addr_lbl">
+      <mdb-icon fas icon="phone-alt"></mdb-icon>
+      {{contactNo}}
+    </label>
+  </div>
+</div>
+
+<div class="fixed_cart" *ngIf="cart.cart?.length">
+  <div class="container">
+    <div class="flex_cart">
+      <label class="subTotal">{{util.translate('Your Order')}} ({{cart.totalItem}}) </label>
+      <div class="flxer">
+        <label class="subTotal" *ngIf="util.cside ==='left'">{{util.translate('Subtotal')}}: {{util.currecny}}
+          {{cart.totalPrice}}</label>
+        <label class="subTotal" *ngIf="util.cside ==='right'">{{util.translate('Subtotal')}}:
+          {{cart.totalPrice}}{{util.currecny}} </label>
+        <button mdbBtn class="place_btn" (click)="openCart()">{{util.translate('Checkout')}}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,142 @@
+
+<ion-content>
+  <div class="mainContent">
+
+    <div class="restContent" [ngStyle]="{'background-image':'url('+api.mediaURL+cover+'),url(assets/placeholder.jpg)'}">
+      <div class="btnss">
+        <ion-icon (click)="back()" class="backIcon" color="light" slot="start" name="arrow-back-outline"></ion-icon>
+        <ion-label class="moreInfo" (click)="openDetails()">{{util.translate('View more')}}</ion-label>
+      </div>
+    </div>
+
+
+    <div class="foodsContent">
+      <ion-label class="restname">{{name}}</ion-label>
+      <ion-label class="cusine">{{cusine}}</ion-label>
+      <div class="ratting">
+        <ion-icon [name]="totalRatting >= 1 ? 'star-outline':'star'" [color]="totalRatting >= 1 ? 'warning':'medium'">
+        </ion-icon>
+        <ion-icon [name]="totalRatting >= 2 ? 'star-outline':'star'" [color]="totalRatting >= 2 ? 'warning':'medium'">
+        </ion-icon>
+        <ion-icon [name]="totalRatting >= 3 ? 'star-outline':'star'" [color]="totalRatting >= 3 ? 'warning':'medium'">
+        </ion-icon>
+        <ion-icon [name]="totalRatting >= 4 ? 'star-outline':'star'" [color]="totalRatting >= 4 ? 'warning':'medium'">
+        </ion-icon>
+        <ion-icon [name]="totalRatting >= 5 ? 'star-outline':'star'" [color]="totalRatting >= 5 ? 'warning':'medium'">
+        </ion-icon>
+        ( {{ratting}} {{util.translate('Rattings')}} )
+      </div>
+      <div class="deliveryAddress">
+        <img src="assets/pin.png" alt="" class="pin">
+        <p class="address"> {{address}}</p>
+
+      </div>
+        <div class="vegSection">
+          <ion-label>{{util.translate('Veg Only')}}</ion-label>
+          <ion-toggle color="success" mode="ios" (ionChange)="statusChange()" [(ngModel)]="veg"></ion-toggle>
+        </div>
+      <div *ngIf="categories?.length">
+        <ion-segment #content (ionChange)="segmentChanged()" scrollable [(ngModel)]="caetId" mode="md">
+          <ion-segment-button [value]="item.id" [id]="item.id" *ngFor="let item of categories">
+            <ion-label> {{item.name}} </ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <div class="card_div">
+
+          <div class="card" *ngFor="let item of foods;let i = index">
+            <div class="mainCat">
+              <img [src]="api.mediaURL+item.cover" class="image_div" onError="this.src='assets/placeholder.jpg'"
+                [alt]="item.name">
+              <div class="desc_div">
+                <ion-label class="heading_lbl">
+                  {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+                </ion-label>
+                <div class="ratting">
+                  <ion-icon [name]="item.rating >= 1 ? 'star-outline':'star'"
+                    [color]="item.rating >= 1 ? 'warning':'medium'">
+                  </ion-icon>
+                  <ion-icon [name]="item.rating >= 2 ? 'star-outline':'star'"
+                    [color]="item.rating >= 2 ? 'warning':'medium'">
+                  </ion-icon>
+                  <ion-icon [name]="item.rating >= 3 ? 'star-outline':'star'"
+                    [color]="item.rating >= 3 ? 'warning':'medium'">
+                  </ion-icon>
+                  <ion-icon [name]="item.rating >= 4 ? 'star-outline':'star'"
+                    [color]="item.rating >= 4 ? 'warning':'medium'">
+                  </ion-icon>
+                  <ion-icon [name]="item.rating >= 5 ? 'star-outline':'star'"
+                    [color]="item.rating >= 5 ? 'warning':'medium'">
+                  </ion-icon>
+                  ({{item.totalRatting ? item.totalRatting:0}}. {{util.translate('Rattings')}} )
+                </div>
+                <ion-label class="small_lbl">
+                  {{ (item.details.length>30)? (item.details | slice:0:30)+'..':(item.details) }}
+                </ion-label>
+                <ion-label class="heading_lbl" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.price}}</ion-label>
+                <ion-label class="heading_lbl" *ngIf="util.cside ==='right'"> {{item.price}} {{util.currecny}}
+                </ion-label>
+              </div>
+              <div class="cartBtn" *ngIf="!cart.itemId.includes(item.id)">
+                <ion-label class="btns" (click)="add(i)">{{util.translate('Add')}}</ion-label>
+                <ion-label *ngIf="item && item.variations && item.variations?.length" style="font-size: 8px;">
+                  {{util.translate('customizable')}}</ion-label>
+              </div>
+              <div class="cartBtn2" *ngIf="cart.itemId.includes(item.id)">
+                <ion-button (click)="removeQ(i)" fill="clear" size="small">
+                  <ion-icon name="remove"></ion-icon>
+                </ion-button>
+                <p class="qunitity">{{item.quantiy}}</p>
+                <ion-button (click)="addQ(i)" fill="clear" size="small">
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let item of dummy">
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="presentPopover($event)">
+    <ion-fab-button color="light" mode="ios">
+      <ion-icon name="list" color="primary"></ion-icon>
+      <ion-label color="primary">{{util.translate('Menu')}}</ion-label>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-footer *ngIf="cart.cart.length && cart.cart.length > 0" (click)="viewCart()">
+  <ion-toolbar color="primary">
+    <ion-label color="light">{{cart.totalItem}} {{util.translate('ITEM')}}</ion-label>
+    <ion-label color="light" *ngIf="util.cside ==='left'">{{util.currecny}} {{cart.totalPrice}} {{util.translate('total
+      price')}}</ion-label>
+    <ion-label color="light" *ngIf="util.cside ==='right'">{{cart.totalPrice}} {{util.currecny}} {{util.translate('total
+      price')}}</ion-label>
+    <ion-button slot="end" fill="clear" color="light">
+      <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      {{util.translate('View Cart')}}
+    </ion-button>
+    <ion-ripple-effect type="bounded"></ion-ripple-effect>
+  </ion-toolbar>
+</ion-footer>

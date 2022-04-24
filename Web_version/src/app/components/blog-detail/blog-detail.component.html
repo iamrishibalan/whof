@@ -1,0 +1,25 @@
+
+<div class="white_div"></div>
+
+<div class="container rest_container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="food_detail_div">
+
+        <div class="food_image" [style.backgroundImage]="'url('+api.mediaURL+cover+')'"></div>
+        <div class="food_info">
+
+          <div class="header_flex">
+            <label class="bold_lbl">{{title}} </label>
+            <mdb-icon far icon="heart"></mdb-icon>
+          </div>
+
+          <label class="desc_lbl" [innerHTML]="cotent">
+          </label>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

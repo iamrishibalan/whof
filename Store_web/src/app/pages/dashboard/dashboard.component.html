@@ -1,0 +1,580 @@
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{util.translate('Select Driver')}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p *ngIf="!dummyDrivers?.length">{{util.translate('No Active Driver Found')}}</p>
+        <select name="select" class="form-control" [(ngModel)]="selectedDriver">
+            <option *ngFor="let item of dummyDrivers;" [value]="item.id">
+                <span>
+                    <a href="javascript:;"><img class="img-responsive" style="height: 40px;border-radius: 50%;"
+                            [src]="api.mediaURL+item.cover" onError="this.src='assets/images/user.png'"
+                            alt="chat-user"></a>
+                    <label style="font-weight: bold;margin-left: 10px;"> {{item.first_name}}
+                        {{item.last_name}} </label>
+                </span>
+            </option>
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="close()">{{util.translate('Save')}}</button>
+    </div>
+</ng-template>
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{util.translate('updating')}}</p>
+</ngx-spinner>
+<div class="row">
+    <!-- Reset Order Start -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{util.translate('Orders')}}</h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{util.translate('Search')}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control form-control-round" placeholder="Search Order By ID"
+                            (input)="search($event.target.value)">
+                    </div>
+                    <div class="col-sm-4">
+                        <select name="select" [(ngModel)]="current" (ngModelChange)="changeOrders()"
+                            class="form-control">
+                            <option value='all'>{{util.translate('All Orders')}}</option>
+                            <option value='new'>{{util.translate('New')}}</option>
+                            <option value='ongoing'>{{util.translate('Ongoing')}}</option>
+                            <option value='old'>{{util.translate('Delivered / Rejected / Cancelled / Refund')}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive" *ngIf="current==='all'">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{util.translate('ID')}}</th>
+                                <th>{{util.translate('User')}}</th>
+                                <th>{{util.translate('Orders')}}</th>
+                                <th>{{util.translate('Ordered on')}}</th>
+                                <th>{{util.translate('Total')}}</th>
+                                <th>{{util.translate('Status')}}</th>
+                                <th>{{util.translate('Action')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of orders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>#{{item.orderId}} </td>
+                                <td>
+                                    <a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;"
+                                            [src]="api.mediaURL+item.user_cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                    <label style="font-weight: bold;margin-left: 10px;"> {{item.user_first_name}}
+                                        {{item.user_last_name}} </label>
+                                </td>
+                                <td>
+                                    <div class="small_lbl">
+                                        <span *ngFor="let order of item.order;let ol = index">
+                                            <div *ngIf="!order.selectedItem || !order.selectedItem.length"
+                                                class="border_bottom">
+
+                                                <span>{{order.name}} X {{order.quantiy}}</span>
+                                                <span style="font-weight:normal"
+                                                    *ngIf="util.cside ==='left'">{{util.currecny}} {{order.price}}
+                                                </span>
+                                                <span style="font-weight:normal" *ngIf="util.cside ==='right'">
+                                                    {{order.price}} {{util.currecny}}</span>
+                                            </div>
+
+                                            <div *ngFor="let subItems of order.selectedItem;let j = index"
+                                                class="subNames">
+                                                <span class="food_title">{{order.name}} X
+                                                    {{order.selectedItem[j].total}}</span>
+                                                <div *ngFor="let addods of subItems.item" class="flex_titles">
+                                                    <p class="sub_name">
+                                                        - {{addods.name}}
+                                                    </p>
+                                                    <p class="sub_name" *ngIf="util.cside ==='left'">
+                                                        {{util.currecny}} {{addods.value}}
+                                                    </p>
+                                                    <p class="sub_name" *ngIf="util.cside ==='right'">
+                                                        {{addods.value}} {{util.currecny}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{getDates(item.time)}}</td>
+                                <td>
+                                    <span *ngIf="util.cside ==='left'">{{util.currecny}} {{item.total}}</span>
+                                    <span *ngIf="util.cside ==='right'"> {{item.total}} {{util.currecny}}</span>
+
+                                </td>
+                                <td
+                                    *ngIf="item.status ==='created' || item.status ==='accepted' || item.status ==='ongoing'">
+                                    <select name="select" [(ngModel)]="item.status"
+                                        (ngModelChange)="changeStatus(item.status,item)" class="form-control">
+                                        <option value='created'>{{util.translate('Created')}}</option>
+                                        <option value='accepted'>{{util.translate('Accepted')}}</option>
+                                        <option value='ongoing'>{{util.translate('Ongoing')}}</option>
+                                        <option value='cancel'>{{util.translate('Cancelled')}}</option>
+                                        <option value='delivered'>{{util.translate('Delivered')}}</option>
+                                        <option value='rejected'>{{util.translate('Rejected')}}</option>
+                                    </select>
+                                </td>
+                                <td
+                                    *ngIf="item.status ==='cancel' || item.status ==='delivered' || item.status ==='rejected'">
+                                    {{item.status}}
+                                </td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{util.translate('View')}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive" *ngIf="current==='new'">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{util.translate('ID')}}</th>
+                                <th>{{util.translate('User')}}</th>
+                                <th>{{util.translate('Orders')}}</th>
+                                <th>{{util.translate('Ordered on')}}</th>
+                                <th>{{util.translate('Total')}}</th>
+                                <th>{{util.translate('Status')}}</th>
+                                <th>{{util.translate('Action')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of newOrders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>#{{item.orderId}} </td>
+                                <td>
+                                    <a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;"
+                                            [src]="api.mediaURL+item.user_cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                    <label style="font-weight: bold;margin-left: 10px;"> {{item.user_first_name}}
+                                        {{item.user_last_name}} </label>
+                                </td>
+                                <td>
+                                    <div class="small_lbl">
+                                        <span *ngFor="let order of item.order;let ol = index">
+                                            <div *ngIf="!order.selectedItem || !order.selectedItem.length"
+                                                class="border_bottom">
+
+                                                <span>{{order.name}} X {{order.quantiy}}</span>
+                                                <span style="font-weight:normal"
+                                                    *ngIf="util.cside ==='left'">{{util.currecny}} {{order.price}}
+                                                </span>
+                                                <span style="font-weight:normal"
+                                                    *ngIf="util.cside ==='right'">{{order.price}}
+                                                    {{util.currecny}}</span>
+                                            </div>
+
+                                            <div *ngFor="let subItems of order.selectedItem;let j = index"
+                                                class="subNames">
+                                                <span class="food_title">{{order.name}} X
+                                                    {{order.selectedItem[j].total}}</span>
+                                                <div *ngFor="let addods of subItems.item" class="flex_titles">
+                                                    <p class="sub_name">
+                                                        - {{addods.name}}
+                                                    </p>
+                                                    <p class="sub_name" *ngIf="util.cside ==='left'">
+                                                        {{util.currecny}} {{addods.value}}
+                                                    </p>
+                                                    <p class="sub_name" *ngIf="util.cside ==='right'">
+                                                        {{addods.value}} {{util.currecny}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{getDates(item.time)}}</td>
+                                <td>
+                                    <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.total}} </span>
+                                    <span *ngIf="util.cside ==='right'"> {{item.total}} {{util.currecny}} </span>
+
+                                </td>
+                                <td
+                                    *ngIf="item.status ==='created' || item.status ==='accepted' || item.status ==='ongoing'">
+                                    <select name="select" [(ngModel)]="item.status"
+                                        (ngModelChange)="changeStatus(item.status,item)" class="form-control">
+                                        <option value='created'>{{util.translate('Created')}}</option>
+                                        <option value='accepted'>{{util.translate('Accepted')}}</option>
+                                        <option value='ongoing'>{{util.translate('Ongoing')}}</option>
+                                        <option value='cancel'>{{util.translate('Cancelled')}}</option>
+                                        <option value='delivered'>{{util.translate('Delivered')}}</option>
+                                        <option value='rejected'>{{util.translate('Rejected')}}</option>
+                                    </select>
+                                </td>
+                                <td
+                                    *ngIf="item.status ==='cancel' || item.status ==='delivered' || item.status ==='rejected'">
+                                    {{item.status}}
+                                </td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{util.translate('View')}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive" *ngIf="current==='ongoing'">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{util.translate('ID')}}</th>
+                                <th>{{util.translate('User')}}</th>
+                                <th>{{util.translate('Orders')}}</th>
+                                <th>{{util.translate('Ordered on')}}</th>
+                                <th>{{util.translate('Total')}}</th>
+                                <th>{{util.translate('Status')}}</th>
+                                <th>{{util.translate('Action')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of onGoingOrders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>#{{item.orderId}} </td>
+                                <td>
+                                    <a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;"
+                                            [src]="api.mediaURL+item.user_cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                    <label style="font-weight: bold;margin-left: 10px;"> {{item.user_first_name}}
+                                        {{item.user_last_name}} </label>
+                                </td>
+                                <td>
+                                    <div class="small_lbl">
+                                        <span *ngFor="let order of item.order;let ol = index">
+                                            <div *ngIf="!order.selectedItem || !order.selectedItem.length"
+                                                class="border_bottom">
+
+                                                <span>{{order.name}} X {{order.quantiy}}</span>
+                                                <span style="font-weight:normal"
+                                                    *ngIf="util.cside ==='left'">{{util.currecny}} {{order.price}}
+                                                </span>
+                                                <span style="font-weight:normal" *ngIf="util.cside ==='right'">
+                                                    {{order.price}} {{util.currecny}}
+                                                </span>
+                                            </div>
+
+                                            <div *ngFor="let subItems of order.selectedItem;let j = index"
+                                                class="subNames">
+                                                <span class="food_title">{{order.name}} X
+                                                    {{order.selectedItem[j].total}}</span>
+                                                <div *ngFor="let addods of subItems.item" class="flex_titles">
+                                                    <p class="sub_name">
+                                                        - {{addods.name}}
+                                                    </p>
+                                                    <p class="sub_name" *ngIf="util.cside ==='left'">
+                                                        {{util.currecny}} {{addods.value}}
+                                                    </p>
+                                                    <p class="sub_name" *ngIf="util.cside ==='right'">
+                                                        {{addods.value}} {{util.currecny}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{getDates(item.time)}}</td>
+                                <td>
+                                    <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.total}}</span>
+                                    <span *ngIf="util.cside ==='right'"> {{item.total}} {{util.currecny}}</span>
+
+                                </td>
+                                <td
+                                    *ngIf="item.status ==='created' || item.status ==='accepted' || item.status ==='ongoing'">
+                                    <select name="select" [(ngModel)]="item.status"
+                                        (ngModelChange)="changeStatus(item.status,item)" class="form-control">
+                                        <option value='created'>{{util.translate('Created')}}</option>
+                                        <option value='accepted'>{{util.translate('Accepted')}}</option>
+                                        <option value='ongoing'>{{util.translate('Ongoing')}}</option>
+                                        <option value='cancel'>{{util.translate('Cancelled')}}</option>
+                                        <option value='delivered'>{{util.translate('Delivered')}}</option>
+                                        <option value='rejected'>{{util.translate('Rejected')}}</option>
+                                    </select>
+                                </td>
+                                <td
+                                    *ngIf="item.status ==='cancel' || item.status ==='delivered' || item.status ==='rejected'">
+                                    {{item.status}}
+                                </td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{util.translate('View')}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive" *ngIf="current==='old'">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{util.translate('ID')}}</th>
+                                <th>{{util.translate('User')}}</th>
+                                <th>{{util.translate('Orders')}}</th>
+                                <th>{{util.translate('Ordered on')}}</th>
+                                <th>{{util.translate('Total')}}</th>
+                                <th>{{util.translate('Status')}}</th>
+                                <th>{{util.translate('Action')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of oldOrders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>#{{item.orderId}} </td>
+                                <td>
+                                    <a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;"
+                                            [src]="api.mediaURL+item.user_cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                    <label style="font-weight: bold;margin-left: 10px;"> {{item.user_first_name}}
+                                        {{item.user_last_name}} </label>
+                                </td>
+                                <td>
+                                    <div class="small_lbl">
+                                        <span *ngFor="let order of item.order;let ol = index">
+                                            <div *ngIf="!order.selectedItem || !order.selectedItem.length"
+                                                class="border_bottom">
+
+                                                <span>{{order.name}} X {{order.quantiy}}</span>
+                                                <span style="font-weight:normal"
+                                                    *ngIf="util.cside ==='left'">{{util.currecny}} {{order.price}}
+                                                </span>
+                                                <span style="font-weight:normal" *ngIf="util.cside ==='right'">
+                                                    {{order.price}} {{util.currecny}} </span>
+                                            </div>
+
+                                            <div *ngFor="let subItems of order.selectedItem;let j = index"
+                                                class="subNames">
+                                                <span class="food_title">{{order.name}} X
+                                                    {{order.selectedItem[j].total}}</span>
+                                                <div *ngFor="let addods of subItems.item" class="flex_titles">
+                                                    <p class="sub_name">
+                                                        - {{addods.name}}
+                                                    </p>
+                                                    <p class="sub_name" *ngIf="util.cside ==='left'">
+                                                        {{util.currecny}} {{addods.value}}
+                                                    </p>
+                                                    <p class="sub_name" *ngIf="util.cside ==='right'">
+                                                        {{addods.value}} {{util.currecny}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{getDates(item.time)}}</td>
+                                <td>
+                                    <span *ngIf="util.cside ==='left'">{{util.currecny}} {{item.total}}</span>
+                                    <span *ngIf="util.cside ==='right'">{{item.total}} {{util.currecny}}</span>
+
+                                </td>
+                                <td
+                                    *ngIf="item.status ==='created' || item.status ==='accepted' || item.status ==='ongoing'">
+                                    <select name="select" [(ngModel)]="item.status"
+                                        (ngModelChange)="changeStatus(item.status,item)" class="form-control">
+                                        <option value='created'>{{util.translate('Created')}}</option>
+                                        <option value='accepted'>{{util.translate('Accepted')}}</option>
+                                        <option value='ongoing'>{{util.translate('Ongoing')}}</option>
+                                        <option value='cancel'>{{util.translate('Cancelled')}}</option>
+                                        <option value='delivered'>{{util.translate('Delivered')}}</option>
+                                        <option value='rejected'>{{util.translate('Rejected')}}</option>
+                                    </select>
+                                </td>
+                                <td
+                                    *ngIf="item.status ==='cancel' || item.status ==='delivered' || item.status ==='rejected'">
+                                    {{item.status}}
+                                </td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{util.translate('View')}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="has-text-centered">
+                    <pagination-controls id="pagin1" (pageChange)="page = $event"></pagination-controls>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Reset Order End -->
+</div>

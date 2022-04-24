@@ -1,0 +1,80 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="t"> {{util.translate('Profile')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="edit_flag = !edit_flag" *ngIf="edit_flag">
+        <ion-icon slot="icon-only" name="pencil"></ion-icon>
+      </ion-button>
+      <ion-button (click)="update()" *ngIf="!edit_flag">
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="main_div">
+
+      <div class="info_div">
+        <div class="user_img" [ngStyle]="{'background-image':'url('+api.mediaURL+cover+'),url(assets/placeholder.jpg)'}"
+          (click)="updateProfile()">
+        </div>
+
+        <div class="name">
+          <div class="image_div">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="content_div">
+            <span>{{util.translate('First name')}} &nbsp;- </span>
+            <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.translate('First name')"
+              [(ngModel)]="fname">
+            </ion-input>
+          </div>
+        </div>
+
+        <div class="name">
+          <div class="image_div">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="content_div">
+            <span>{{util.translate('Last name')}} &nbsp;- </span>
+            <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.translate('Last name')"
+              [(ngModel)]="lname">
+            </ion-input>
+          </div>
+        </div>
+
+        <div class="name">
+          <div class="image_div">
+            <ion-icon name="mail-outline"></ion-icon>
+          </div>
+          <div class="content_div">
+            <span>{{util.translate('Email')}} &nbsp;- </span>
+            <ion-input type="text" [disabled]="true" [placeholder]="util.translate('Email')" [(ngModel)]="email">
+            </ion-input>
+          </div>
+        </div>
+
+        <div class="name">
+          <div class="image_div">
+            <ion-icon name="call-outline"></ion-icon>
+          </div>
+          <div class="content_div">
+            <span>{{util.translate('Mobile')}} &nbsp;- </span>
+            <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.translate('Mobile')" [(ngModel)]="mobile">
+            </ion-input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

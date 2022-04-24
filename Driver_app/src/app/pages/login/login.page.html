@@ -1,0 +1,138 @@
+
+<ion-content class="ion-padding">
+  <div class="login-logo">
+    <img src="assets/imgs/icon.png" class="logo_icon" alt="S2ftech">
+    <p class="login-name">{{util.translate('Login')}}</p>
+    <p class="subTitle">{{util.translate('Enter your login detail to')}} <br>
+      {{util.translate('access your account')}}</p>
+  </div>
+
+  <form #loginForm="ngForm" novalidate *ngIf="util.user_login ==='0'">
+    <ion-list lines="none">
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="login.email" type="email" [placeholder]="util.translate('Email')" name="email"
+          #email="ngModel" spellcheck="false" autocapitalize="off" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="email.valid || submitted == false" class="ion-padding-start">
+          {{util.translate('Email is required')}}
+        </p>
+      </ion-text>
+
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="login.password" name="password" [placeholder]="util.translate('Password')"
+          type="password" #password="ngModel" required>
+        </ion-input>
+      </ion-item>
+
+      <ion-text color="danger">
+        <p [hidden]="password.valid || submitted == false" class="ion-padding-start">
+          {{util.translate('Password is required')}}
+        </p>
+      </ion-text>
+    </ion-list>
+
+    <ion-row class="ion-no-margin ion-no-padding">
+      <ion-col class="ion-no-margin ion-no-padding">
+        <p class="frgTag" (click)="resetPass()">{{util.translate('Forgot Password?')}}</p>
+        <ion-button class="btn_class" (click)="onLogin(loginForm)" type="submit" expand="block" [disabled]="isLogin">
+          <span *ngIf="!isLogin"> {{util.translate('Log In')}}</span>
+          <ion-spinner name="circles" *ngIf="isLogin"></ion-spinner>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+  <form #loginForm="ngForm" novalidate *ngIf="util.user_login ==='1'">
+    <ion-list lines="none">
+      <ion-row>
+        <ion-col size="3" (click)="openCountry()">
+          <ion-item lines="none">
+            <ion-input style="font-size: 12px;" [(ngModel)]="mobile.ccCode" disabled="true" type="text" name="ccode"
+              #ccode="ngModel" spellcheck="false" autocapitalize="off" required>
+            </ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="9">
+          <ion-item lines="none">
+            <ion-input [(ngModel)]="mobile.phone" type="number" [placeholder]="util.translate('Mobile Number')"
+              name="mobile" #phone="ngModel" spellcheck="false" autocapitalize="off" required>
+            </ion-input>
+          </ion-item>
+          <ion-text color="danger">
+            <p [hidden]="phone.valid || submitted == false" class="ion-padding-start">
+              {{util.translate('Phone number is required')}}
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="mobile.password" name="password" [placeholder]="util.translate('Password')"
+          type="password" #password="ngModel" required>
+        </ion-input>
+      </ion-item>
+
+      <ion-text color="danger">
+        <p [hidden]="password.valid || submitted == false" class="ion-padding-start">
+          {{util.translate('Password is required')}}
+        </p>
+      </ion-text>
+    </ion-list>
+
+    <ion-row class="ion-no-margin ion-no-padding">
+      <ion-col class="ion-no-margin ion-no-padding">
+        <p class="frgTag" (click)="resetPass()">{{util.translate('Forgot Password?')}}</p>
+        <ion-button class="btn_class" (click)="onPhoneLogin(loginForm)" type="submit" expand="block"
+          [disabled]="isLogin">
+          <span *ngIf="!isLogin"> {{util.translate('Log In')}}</span>
+          <ion-spinner name="circles" *ngIf="isLogin"></ion-spinner>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+
+  <form #loginForm="ngForm" novalidate *ngIf="util.user_login ==='2'">
+    <ion-list lines="none">
+      <ion-row>
+        <ion-col size="3" (click)="openCountry()">
+          <ion-item lines="none">
+            <ion-input style="font-size: 12px;" [(ngModel)]="mobileLogin.ccCode" disabled="true" type="text"
+              name="ccode" #ccode="ngModel" spellcheck="false" autocapitalize="off" required>
+            </ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="9">
+          <ion-item lines="none">
+            <ion-input [(ngModel)]="mobileLogin.phone" type="number" [placeholder]="util.translate('Mobile Number')"
+              name="mobile" #phone="ngModel" spellcheck="false" autocapitalize="off" required>
+            </ion-input>
+          </ion-item>
+          <ion-text color="danger">
+            <p [hidden]="phone.valid || submitted == false" class="ion-padding-start">
+              {{util.translate('Phone number is required')}}
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+    </ion-list>
+
+    <ion-row class="ion-no-margin ion-no-padding">
+      <ion-col class="ion-no-margin ion-no-padding">
+        <p class="frgTag" (click)="resetPass()">{{util.translate('Forgot Password?')}}</p>
+        <ion-button class="btn_class" (click)="onOTPLogin(loginForm)" type="submit" expand="block" [disabled]="isLogin">
+          <span *ngIf="!isLogin"> {{util.translate('Log In')}}</span>
+          <ion-spinner name="circles" *ngIf="isLogin"></ion-spinner>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+
+</ion-content>

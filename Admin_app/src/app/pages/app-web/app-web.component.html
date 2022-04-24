@@ -1,0 +1,163 @@
+
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}}</p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{api.translate('App Info')}} </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Contact No')}}</label>
+                        <input type="number" [(ngModel)]="mobile" class="form-control"
+                            [placeholder]="api.translate('Contact No')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Contact Email')}}</label>
+                        <input type="email" [(ngModel)]="email" class="form-control"
+                            [placeholder]="api.translate('Contact Email')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Address')}}</label>
+                        <input type="text" [(ngModel)]="address" class="form-control"
+                            [placeholder]="api.translate('Address')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('City')}}</label>
+                        <input type="text" [(ngModel)]="city" class="form-control"
+                            [placeholder]="api.translate('City')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('State')}}</label>
+                        <input type="text" [(ngModel)]="state" class="form-control"
+                            [placeholder]="api.translate('State')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Zip')}}</label>
+                        <input type="number" [(ngModel)]="zip" class="form-control"
+                            [placeholder]="api.translate('Zip')">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Country')}}</label>
+                        <input type="text" [(ngModel)]="country" class="form-control"
+                            [placeholder]="api.translate('Country')">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <h5>{{api.translate('Orders')}} </h5>
+            </div>
+
+            <div class="card-body reset-table p-t-0">
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Minimum Order')}}</label>
+                        <input type="number" [(ngModel)]="min" class="form-control"
+                            [placeholder]="api.translate('Minimum Order')">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Free Shipping on order price')}}</label>
+                        <input type="number" [(ngModel)]="free" class="form-control"
+                            [placeholder]="api.translate('Free Shipping on order price')">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Order Tax')}}</label>
+                        <input type="number" [(ngModel)]="tax" class="form-control"
+                            [placeholder]="api.translate('Order Tax')">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Shipping Price')}} </label>
+                        <select name="select" [(ngModel)]="shipping" class="form-control">
+                            <option value="fixed">{{api.translate('Fixed')}}</option>
+                            <option value="km">{{api.translate('Per KM')}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6" *ngIf="shipping ==='fixed'">
+                        <label>{{api.translate('Fixed price')}}</label>
+                        <input type="number" [(ngModel)]="shippingPrice" class="form-control"
+                            [placeholder]="api.translate('Fixed price')">
+                    </div>
+
+                    <div class="col-sm-6" *ngIf="shipping ==='km'">
+                        <label>{{api.translate('Per KM price')}}</label>
+                        <input type="number" [(ngModel)]="shippingPrice" class="form-control"
+                            [placeholder]="api.translate('Per KM price')">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Allow Delivery Distance')}}</label>
+                        <input type="number" [(ngModel)]="allowDistance" class="form-control"
+                            [placeholder]="api.translate('Allow Delivery Distance')">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <h5>{{api.translate('Social Links')}} </h5>
+            </div>
+
+            <div class="card-body reset-table p-t-0">
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Footer descriptions')}}</label>
+                        <!-- <input type="text" [(ngModel)]="web_footer" class="form-control" placeholder="Footer descriptions"> -->
+                        <textarea rows="5" cols="5" [(ngModel)]="web_footer" class="form-control"
+                            [placeholder]="api.translate('Footer descriptions')"></textarea>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Facebook Link')}}</label>
+                        <input type="text" [(ngModel)]="facebook" class="form-control"
+                            [placeholder]="api.translate('Facebook Link')">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Instagram Link')}}</label>
+                        <input type="text" [(ngModel)]="instagram" class="form-control"
+                            [placeholder]="api.translate('Instagram Link')">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Twitter Link')}}</label>
+                        <input type="text" [(ngModel)]="twitter" class="form-control"
+                            [placeholder]="api.translate('Twitter Link')">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Google playstore Link')}}</label>
+                        <input type="text" [(ngModel)]="google_playstore" class="form-control"
+                            [placeholder]="api.translate('Playstore Link')">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>{{api.translate('Apple Appstore Link')}}</label>
+                        <input type="text" [(ngModel)]="apple_appstore" class="form-control"
+                            [placeholder]="api.translate('Apple Appstore Link')">
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <button class="btn btn-danger btn-round" (click)="submit()">{{api.translate('Update')}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

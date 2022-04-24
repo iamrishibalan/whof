@@ -1,0 +1,145 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Booking Details')}} #{{id}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="chat()" color="light">
+        <ion-icon slot="end" name="chatbox-ellipses-outline"></ion-icon>
+        {{util.translate('Support')}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!loaded" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    <ion-spinner color="primary" name="crescent"></ion-spinner>
+  </div>
+  <div class="main_content_div" *ngIf="loaded">
+    <ion-label class="header_lbl">{{util.translate('Booking Summary')}}</ion-label>
+    <ion-label class="res_location">{{util.translate('This Booking with')}} {{restName}} {{util.translate('was')}}
+      {{status}}
+    </ion-label>
+
+    <div class="line_div"></div>
+
+    <ion-label class="res_location">{{address}}</ion-label>
+
+    <div class="flex_div">
+      <ion-label class="res_name" style="margin-top: 0px;">{{util.translate('Your Booking')}}</ion-label>
+      <div *ngIf="this.need[0].veg !='5'">
+        <ion-label class="fav_lbl" (click)="trackMyOrder()" *ngIf="status =='ongoing' || status =='accepted' ">
+          {{util.translate('Track Order')}}
+        </ion-label>
+      </div>
+     
+    </div>
+
+    <!-- <div class="line_div"></div> -->
+
+    <span *ngFor="let item of orders">
+
+      <div *ngFor="let subItems of item.selectedItem;let j = index" class="subNames">
+        <ion-label class="food_title">
+          {{item.name}} X
+          {{item.selectedItem[j].total}}</ion-label>
+        <div *ngFor="let addods of subItems.item" class="flex_titles">
+          <p class="sub_name">
+            - {{addods.name}}
+          </p>
+          <p class="sub_name" *ngIf="util.cside ==='left'">
+            {{util.currecny}} {{addods.value}}
+          </p>
+          <p class="sub_name" *ngIf="util.cside ==='right'">
+            {{addods.value}} {{util.currecny}}
+          </p>
+        </div>
+      </div>
+
+      <div class="card_div" *ngIf="!item.selectedItem || !item.selectedItem.length">
+        <div class="flex_div">
+          <ion-label class="food_title">{{item.name}} X {{item.quantiy}} </ion-label>
+          <ion-label class="food_price" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.quantiy * item.price}}
+          </ion-label>
+          <ion-label class="food_price" *ngIf="util.cside ==='right'"> {{item.quantiy * item.price}} {{util.currecny}}
+          </ion-label>
+        </div>
+
+      </div>
+
+    </span>
+
+    <ion-label style="margin-top: 5px; font-weight: 600px;">{{util.translate('Booking Total')}}
+      <span class="prise_lbl" *ngIf="util.cside === 'left'">{{util.currecny}} {{total}}</span>
+      <span class="prise_lbl" *ngIf="util.cside === 'right'">{{total}} {{util.currecny}}</span>
+    </ion-label>
+    <ion-label style="margin-top: 5px; font-weight: 600px;" *ngIf="coupon">{{util.translate('Coupon Discout')}}
+      <span class="prise_lbl" *ngIf="util.cside === 'left'">{{util.currecny}} {{dicount}}</span>
+      <span class="prise_lbl" *ngIf="util.cside === 'right'">{{dicount}} {{util.currecny}}</span>
+    </ion-label>
+    <ion-label style="margin-top: 5px; font-size: 14px" *ngIf="this.need[0].veg !='5'">{{util.translate('Delivery Charge')}}
+      <span class="prise_lbl" *ngIf="util.cside === 'left'">{{util.currecny}} {{delivery_charge}}</span>
+      <span class="prise_lbl" *ngIf="util.cside === 'right'">{{delivery_charge}} {{util.currecny}}</span>
+    </ion-label>
+    <ion-label style="margin-top: 5px; font-size: 14px">{{util.translate('Service Charge')}}
+      <span class="prise_lbl" *ngIf="util.cside === 'left'">{{util.currecny}} {{serviceTax}}</span>
+      <span class="prise_lbl" *ngIf="util.cside === 'right'">{{serviceTax}} {{util.currecny}}</span>
+    </ion-label>
+    <ion-label style="margin-top: 5px; font-size: 14px">{{util.translate('Grand Total')}}
+      <span class="prise_lbl" *ngIf="util.cside === 'left'">{{util.currecny}} {{grandTotal}}</span>
+      <span class="prise_lbl" *ngIf="util.cside === 'right'">{{grandTotal}} {{util.currecny}}</span>
+    </ion-label>
+    <div class="line_div"></div>
+
+    <ion-label class="res_name">{{util.translate('Booking Detail')}}</ion-label>
+    <div class="line_div"></div>
+
+    <ion-label class="head_gray">{{util.translate('Booking Number')}}</ion-label>
+    <ion-label class="small_lbl">#{{id}}</ion-label>
+    <ion-label class="head_gray" *ngIf="this.need[0].veg !='5'">{{util.translate('Order Notes')}}</ion-label>
+    <ion-label class="small_lbl">{{orderNotes}}</ion-label>
+    <ion-label class="head_gray">{{util.translate('Payment')}}</ion-label>
+    <ion-label class="small_lbl">{{util.translate('Paid :')}} {{paid}} </ion-label>
+    <ion-label class="head_gray">{{util.translate('Date')}}</ion-label>
+    <ion-label class="small_lbl">{{time}}</ion-label>
+    <ion-label class="head_gray" *ngIf="bkdate !='undefined'">Booking Date</ion-label>
+    <ion-label class="small_lbl" *ngIf="bkdate !='undefined'">{{bkdate}}{{bktime}}</ion-label>
+    <ion-label class="head_gray" *ngIf="this.need[0].veg !='5'">{{util.translate('Deliver to')}}</ion-label>
+    <ion-label class="small_lbl">{{deliveryAddress}}</ion-label>
+
+    <div class="line_div"></div>
+
+    <div *ngIf="this.orders[0].veg !='5'">
+      <ion-label class="red_lbl" *ngIf="status =='created' ||status =='ongoing' || status =='accepted' "
+        (click)="call()">
+        {{util.translate('Call Restaurant')}} {{restName}}</ion-label>
+
+      <ion-label class="red_lbl" *ngIf="status =='ongoing' || status =='accepted' " (click)="driverCall()">
+        {{util.translate('Call Driver')}} {{driverName}}</ion-label>
+    </div>
+    <div *ngIf="this.orders[0].veg =='5'">
+      <ion-label class="red_lbl" *ngIf="status =='created' ||status =='ongoing' || status =='accepted' "
+        (click)="call()">
+        {{util.translate('Call')}} {{restName}}</ion-label>
+    </div>
+
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <div class="btn_div">
+      <ion-button *ngIf="status ==='delivered'" (click)="presentAlertConfirm()" size="small" class="ratae">
+        <ion-icon name="star" color="light" slot="start"></ion-icon>
+        {{util.translate('Rate Booking')}}
+      </ion-button>
+      <ion-button *ngIf="status === 'created' ||status === 'ongoing' || status === 'accepted' " (click)="changeStatus()"
+        size="small" class="reject">
+        {{util.translate('Cancel Booking')}}
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

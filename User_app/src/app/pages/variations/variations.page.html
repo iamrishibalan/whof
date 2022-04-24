@@ -1,0 +1,87 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-start">{{productName}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeIt()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Same Product -->
+  <div *ngIf="sameProduct">
+    <div *ngFor="let item of sameCart;let i = index" class="cartItems">
+      <p class="name">{{productName}}</p>
+      <div class="details">
+        <div class="names">
+          <p *ngFor="let sub of item.item" class="subDetails"> {{sub.name}} </p>
+        </div>
+        <div class="cartBtn2">
+          <ion-button (click)="removeQ(i)" fill="clear" size="small">
+            <ion-icon name="remove"></ion-icon>
+          </ion-button>
+          <p class="qunitity">{{item.total}}</p>
+          <ion-button (click)="addQ(i)" fill="clear" size="small">
+            <ion-icon name="add"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- New Or diff variations -->
+  <div *ngIf="!sameProduct" class="padder">
+    <div *ngFor="let item of lists">
+      <ion-list *ngIf="item.type == 'radio'">
+        <ion-radio-group (ionChange)="radioGroupChange($event,item.title)">
+          <ion-list-header>
+            <ion-label>{{item.title}}</ion-label>
+          </ion-list-header>
+          <ion-item *ngFor="let sub of item.items;let i = index;">
+            <ion-label style="text-align: left">{{sub.title}}</ion-label>
+            <ion-label style="text-align: right" *ngIf="util.cside =='right'"> {{sub.price}} {{util.currecny}}
+            </ion-label>
+            <ion-label style="text-align: right" *ngIf="util.cside =='left'"> {{util.currecny}} {{sub.price}}
+            </ion-label>
+            <ion-radio slot="start" [value]="sub.title" [name]="sub.title" mode="md"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+      <ion-list *ngIf="item.type =='check'">
+        <ion-list-header>
+          <ion-label>{{item.title}}</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let sub of item.items;let j = index;">
+          <ion-label style="text-align: left">{{sub.title}}</ion-label>
+          <ion-label style="text-align: right" *ngIf="util.cside =='right'"> {{sub.price}} {{util.currecny}}</ion-label>
+          <ion-label style="text-align: right" *ngIf="util.cside =='left'"> {{util.currecny}} {{sub.price}}</ion-label>
+          <ion-checkbox slot="start" [value]="sub.price" (ionChange)="checkedEvent($event,sub.title)" mode="md">
+          </ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+  <div class="footers">
+    <ion-button (click)="addToCart()" expand="block" *ngIf="!sameProduct">
+      {{util.translate('Add')}} {{total ? this.util.currecny:'' }} {{total ? total : ''}}
+    </ion-button>
+    <ion-row *ngIf="sameProduct">
+      <ion-col size="6">
+        <ion-button (click)="sameChoise()" expand="block">
+          {{util.translate('OK')}}
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button (click)="sameProduct = !sameProduct;newItem = true" expand="block">
+          {{util.translate('Add new')}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </div>
+</ion-content>

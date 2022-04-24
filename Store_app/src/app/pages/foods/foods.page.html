@@ -1,0 +1,63 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Foods')}}</ion-title>
+    <ion-button (click)="addnew()" slot="end" fill="clear" color="light">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="mainContent">
+    <ion-searchbar [placeholder]="util.translate('Search  foods')" [(ngModel)]="terms" inputmode="text" type="search"
+      (keyup.enter)="search(q.value)" (ionChange)="onSearchChange($event)" #q [debounce]="250" mode="ios"
+      showCancelButton="never">
+    </ion-searchbar>
+    <h2 class="ion-text-center" *ngIf="!dummy?.length && !categories?.length">{{util.translate('No Foods Found')}}</h2>
+    <ion-item *ngFor="let item of dummy">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+    <div>
+      <ion-segment (ionChange)="segmentChanged()" scrollable="true" [(ngModel)]="caetId" mode="md">
+        <ion-segment-button [value]="item.id" *ngFor="let item of categories">
+          <ion-label> {{item.name}} </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <div *ngFor="let item of foods">
+
+      <span class="card_div" (click)="foodsInfo(item)">
+        <div class="back_image"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.jpg)'}"></div>
+        <div class="content_div">
+          <ion-label class="title">{{item.name}}</ion-label>
+          <ion-label class="small">
+            {{ (item.details.length>50)? (item.details | slice:0:50)+'..':(item.details) }}
+          </ion-label>
+          <ion-label *ngIf="item.veg ==='1'" class="veg">{{util.translate('Veg')}}</ion-label>
+          <ion-label *ngIf="item.veg ==='0'" class="nonVeg">{{util.translate('Non Veg')}}</ion-label>
+          <ion-label class="title"> {{item.price}}</ion-label>
+        </div>
+      </span>
+    </div>
+  </div>
+</ion-content>

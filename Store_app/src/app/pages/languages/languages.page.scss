@@ -1,0 +1,11 @@
+
+.thums {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  img {
+    height: 25px;
+    width: 25px;
+  }
+}

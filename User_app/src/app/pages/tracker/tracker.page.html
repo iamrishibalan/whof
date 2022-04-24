@@ -1,0 +1,49 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Tracking')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="upper_div">
+      <div #map id="map" class="map"></div>
+    </div>
+    <div class="lower_div">
+      <ion-label class="head_lbl">{{util.translate('Order on the Way')}}</ion-label>
+
+      <div class="driver_detail_div">
+        <div class="back_image"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+dCover+'),url(assets/placeholder.jpg)'}"></div>
+        <div style="padding-left: 20px;">
+          <ion-label class="boy_name">{{dName}}</ion-label>
+          <ion-label class="address">{{restAddress}}</ion-label>
+          <ion-button (click)="callDriver()" size="small" fill="outline">
+            {{util.translate('Call')}}
+          </ion-button>
+        </div>
+      </div>
+
+      <ion-label class="order_detail">{{totalOrders.length}} {{util.translate('Items to deliver')}}
+        <span style="color: var(--ion-color-primary);position: absolute;right: 20px;" *ngIf="util.cside==='left'">
+          {{util.currecny}} {{grandTotal}}</span>
+        <span style="color: var(--ion-color-primary);position: absolute;right: 20px;"
+          *ngIf="util.cside==='right'">{{grandTotal}} {{util.currecny}}</span>
+      </ion-label>
+      <ion-label class="order_detail">{{util.translate('Order Status')}}<span class="order_status">{{status}}</span>
+      </ion-label>
+
+      <ion-label class="order_detail">{{util.translate('Payment')}}<span class="order_status">{{payMethod}}</span>
+      </ion-label>
+
+    </div>
+
+  </div>
+</ion-content>

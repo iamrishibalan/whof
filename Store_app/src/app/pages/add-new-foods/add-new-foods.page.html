@@ -1,0 +1,104 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="isEdit">{{util.translate('Edit Food')}}</ion-title>
+
+    <ion-title *ngIf="!isEdit">{{util.translate('Add Food')}}</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="mainContent">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label>{{util.translate('Category')}}</ion-label>
+        <ion-select [(ngModel)]="cid" interface="popover" mode="ios">
+          <ion-select-option *ngFor="let item of categories" [value]="item.id">{{item.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="name" type="text" [placeholder]="util.translate('Food name')"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="price" type="number" [placeholder]="util.translate('Price')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>{{util.translate('Veg')}}</ion-label>
+        <ion-select [(ngModel)]="veg" interface="popover" mode="ios">
+          <ion-select-option value="1">{{util.translate('Veg')}}</ion-select-option>
+          <ion-select-option value="0">{{util.translate('Non Veg')}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-textarea [(ngModel)]="descriptions" rows="5" [placeholder]="util.translate('Short descriptions')">
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{util.translate('Status')}}</ion-label>
+        <ion-select [(ngModel)]="status" interface="popover" mode="ios">
+          <ion-select-option value="1">{{util.translate('Available')}}</ion-select-option>
+          <ion-select-option value="0">{{util.translate('Hide')}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="coverPlaceholder" (click)="cover()" *ngIf="!coverImage || coverImage ==''">
+        <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+        <p>{{util.translate('Upload foods cover image here')}}</p>
+      </div>
+      <div class="coverReal" (click)="cover()"
+        [ngStyle]="{'background-image':'url('+api.mediaURL+coverImage+'),url(assets/placeholder.jpg)'}"
+        *ngIf="coverImage && coverImage !=''">
+      </div>
+      <ion-item>
+        <ion-label>{{util.translate('Size?')}} <span style="font-size: 10px !important;">(
+            {{util.translate('Regular,Medium,Large')}} ) </span> </ion-label>
+        <ion-select [(ngModel)]="size" (ngModelChange)="changeSize($event)" interface="popover" mode="ios">
+          <ion-select-option value="1">{{util.translate('Yes')}}</ion-select-option>
+          <ion-select-option value="0">{{util.translate('No')}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item class="noLines">
+        <ion-label>{{util.translate('Add-ons')}} <span
+            style="font-size: 10px !important;">({{util.translate('Extras,cold drinks')}})</span> </ion-label>
+        <ion-icon name="add" (click)="addNew()" slot="end"></ion-icon>
+      </ion-item>
+
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let item of variations;let i = index;">
+          <ion-item class="noLines">
+            <ion-label>{{item.title}}</ion-label>
+            <ion-icon name="create-outline" slot="end" *ngIf="item.title !=='size'" (click)="editTitle(i)"></ion-icon>
+            <ion-icon name="add-circle" slot="end" (click)="addItem(i)"></ion-icon>
+            <ion-icon name="trash" slot="end" (click)="delete(item)"></ion-icon>
+          </ion-item>
+          <ion-item *ngFor="let sub of item.items;let j = index" class="sub" lines="nones">
+            <ion-label>{{sub.title}}
+              <ion-label>{{sub.price}}</ion-label>
+            </ion-label>
+            <ion-icon name="create-outline" slot="end" (click)="editSub(i,sub,j)"></ion-icon>
+            <ion-icon name="trash-outline" slot="end" (click)="deleteSub(i,sub)"></ion-icon>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-list>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button (click)="submit()" expand="block">
+            {{util.translate('Submit')}}
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button expand="block" (click)="preview()">{{util.translate('Preview')}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+
+  </div>
+</ion-content>

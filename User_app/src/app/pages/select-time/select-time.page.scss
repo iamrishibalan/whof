@@ -1,0 +1,46 @@
+// .butcont {
+//     font-size: 12px;
+//     border: 2px solid;
+//     border-color: white;
+// }
+
+// ion-row {
+//     text-align: -webkit-center;
+//     padding: 6px;
+// }
+
+
+.spancont{
+// border: 1px solid grey !important;
+padding: 8px;
+background-color: #ffc602;
+border-radius: 25px;
+font-size: 14px;
+color: white;
+text-align: -webkit-center;
+margin: 5px 5px 5px 5px;
+}
+.spancontt{
+    // border: 1px solid grey !important;
+    padding: 8px;
+    background-color: #760128;
+    border-radius: 25px;
+    font-size: 14px;
+    color: white;
+    }
+.spancont:hover{
+   background-color: #303030;
+}
+
+.my-disable{
+    pointer-events:none;
+}
+
+
+.dot{
+    width: 20px;
+    height: 20px;
+    border: 1px solid white;
+    border-radius: 100px;
+    text-align: -webkit-center;
+}

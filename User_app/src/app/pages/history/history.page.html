@@ -1,0 +1,117 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{util.translate('Recent Orders')}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="util.openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="mainContent">
+    <div *ngFor="let item of dummy">
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div class="noData" *ngIf="!haveItems && !dummy?.length">
+      <img src="assets/runing.gif" alt="" class="noDataImg">
+      <ion-label>{{util.translate("You haven't ordered anything")}}</ion-label>
+      <ion-label>{{util.translate('Please Place your order')}} </ion-label>
+    </div>
+    <div class="haveData">
+
+      <div class="card_div" *ngFor="let item of myOrders" (click)="goToHistoryDetail(item.orderId)">
+
+        <div class="resto_detail">
+          <div class="back_image"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+item.str_cover+'),url(assets/placeholder.jpg)'}"></div>
+          <div style="margin-left: 20px;">
+            <ion-label class="res_name">{{item.str_name}}</ion-label>
+            <ion-label class="res_location">
+              {{item.str_address}}
+            </ion-label>
+          </div>
+        </div>
+
+        <div class="line_div"></div>
+        <div class="order_detail">
+          <ion-label class="head_gray">{{util.translate('BOOKINGS')}}</ion-label>
+          <div class="small_lbl">
+            <span *ngFor="let order of item.orders;let ol = index">
+              <div *ngIf="!order.selectedItem || !order.selectedItem.length" class="border_bottom">
+                {{order.name}} {{order.price}} X {{order.quantiy}} <span *ngIf="ol !=item.orders.length">,</span>
+              </div>
+
+              <div *ngFor="let subItems of order.selectedItem;let j = index" class="subNames">
+                <ion-label class="food_title">{{order.name}} X {{order.selectedItem[j].total}}</ion-label>
+                <div *ngFor="let addods of subItems.item" class="flex_titles">
+                  <p class="sub_name">
+                    - {{addods.name}}
+                  </p>
+                  <p class="sub_name" *ngIf="util.cside ==='left'">
+                    {{util.currecny}} {{addods.value}}
+                  </p>
+                  <p class="sub_name" *ngIf="util.cside ==='right'">
+                    {{addods.value}} {{util.currecny}}
+                  </p>
+                </div>
+              </div>
+            </span>
+          </div>
+          <ion-label class="head_gray">{{util.translate('ORDERED ON')}}</ion-label>
+          <ion-label class="small_lbl">{{getDate(item.time)}} </ion-label>
+          <ion-label class="head_gray" *ngIf="item.bdate !='undefined'">Booking date</ion-label>
+          <ion-label class="small_lbl" *ngIf="item.bdate !='undefined'">{{item.bdate}}{{item.btime}}</ion-label>
+          <ion-label class="head_gray">{{util.translate('TOTAL AMOUNT')}}</ion-label>
+          <ion-label class="small_lbl" *ngIf="util.cside ==='left'"> {{util.currecny}}{{item.grand_total}}</ion-label>
+          <ion-label class="small_lbl" *ngIf="util.cside ==='right'"> {{item.grand_total}} {{util.currecny}}</ion-label>
+        </div>
+
+        <div class="line_div"></div>
+
+        <div class="status_detail" *ngIf="item.status =='completed' || item.status == 'delivered'">
+          <div class="deliver_div">
+            {{util.translate('Completed')}}
+          </div>
+        </div>
+        <div class="status_detail" *ngIf="item.status =='rejected' || item.status == 'cancel'">
+          <div class="deliver_div">
+            {{util.translate('Your Booking is')}} Cancelled
+          </div>
+        </div>
+        <div class="status_detail"
+          *ngIf="item.status =='created' || item.status =='ongoing' || item.status === 'accepted'">
+          <div class="deliver_div">
+            {{util.translate('Your Booking is')}} {{item.status}}
+          </div>
+          <div class="repeat_div" style="color: green;" *ngIf="item.orders[0].veg !='5'">
+            <ion-icon name="map-outline"></ion-icon>{{util.translate('Track Order')}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
